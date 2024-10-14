@@ -4,6 +4,10 @@
  */
 package spdvi.adminusers;
 
+import javax.swing.table.DefaultTableModel;
+import spdvi.adminusers.dataaccess.DataAccess;
+import spdvi.adminusers.dto.Usuari;
+
 /**
  *
  * @author alber
@@ -34,6 +38,11 @@ public class MainForm extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jButtonLogin.setText("Login");
+        jButtonLogin.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonLoginActionPerformed(evt);
+            }
+        });
 
         jMenuFile.setText("File");
         jMenuBar1.add(jMenuFile);
@@ -62,6 +71,11 @@ public class MainForm extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButtonLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonLoginActionPerformed
+         Loguin login = new Loguin();
+         login.setVisible(true);
+    }//GEN-LAST:event_jButtonLoginActionPerformed
 
     /**
      * @param args the command line arguments
