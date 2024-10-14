@@ -5,6 +5,10 @@
 
 package spdvi.adminusers;
 
+import java.util.ArrayList;
+import spdvi.adminusers.dataaccess.DataAccess;
+import spdvi.adminusers.dto.Usuari;
+
 /**
  *
  * @author alber
@@ -29,6 +33,7 @@ public class Loguin extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jPasswordField1 = new javax.swing.JPasswordField();
+        jButtonConecta = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -44,17 +49,26 @@ public class Loguin extends javax.swing.JFrame {
 
         jPasswordField1.setText("jPasswordField1");
 
+        jButtonConecta.setText("Conecta");
+        jButtonConecta.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonConectaActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(65, 65, 65)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jLabel2)
-                    .addComponent(jLabel1)
-                    .addComponent(jTextFieldEmail)
-                    .addComponent(jPasswordField1, javax.swing.GroupLayout.PREFERRED_SIZE, 285, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jButtonConecta)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(jLabel2)
+                        .addComponent(jLabel1)
+                        .addComponent(jTextFieldEmail)
+                        .addComponent(jPasswordField1, javax.swing.GroupLayout.PREFERRED_SIZE, 285, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(58, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -68,7 +82,9 @@ public class Loguin extends javax.swing.JFrame {
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPasswordField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(69, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
+                .addComponent(jButtonConecta)
+                .addGap(18, 18, 18))
         );
 
         pack();
@@ -77,6 +93,30 @@ public class Loguin extends javax.swing.JFrame {
     private void jTextFieldEmailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldEmailActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextFieldEmailActionPerformed
+
+    private void jButtonConectaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonConectaActionPerformed
+        DataAccess da = new DataAccess();
+        ArrayList<Usuari> usuaris = da.getUsuaris();
+        
+        boolean existe = true;
+        String email = jTextFieldEmail.getText();
+        String pssw = jPasswordField1.getPassword().toString();
+        
+        for (Usuari u: usuaris) {
+            if (u.getEmail().equals(email)) {
+                if (u.getPasswordHash().equals(pssw)) {
+                    GestionGeneral gestion = new GestionGeneral();
+                    gestion.setVisible(true);
+                    break;
+                } else {
+                    System.out.print("Contraseña incorrecta");
+                }
+            }
+        }
+        if (existe)System.out.print("Usuario no encontrado");
+
+        
+    }//GEN-LAST:event_jButtonConectaActionPerformed
 
     /**
      * @param args the command line arguments
@@ -114,6 +154,7 @@ public class Loguin extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButtonConecta;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPasswordField jPasswordField1;

@@ -4,6 +4,11 @@
  */
 package spdvi.adminusers;
 
+import java.util.ArrayList;
+import javax.swing.table.DefaultTableModel;
+import spdvi.adminusers.dataaccess.DataAccess;
+import spdvi.adminusers.dto.Usuari;
+
 /**
  *
  * @author alber
@@ -31,9 +36,9 @@ public class GestionGeneral extends javax.swing.JFrame {
         jScrollPane3 = new javax.swing.JScrollPane();
         jTextArea1 = new javax.swing.JTextArea();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        jTableReviews = new javax.swing.JTable();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTable2 = new javax.swing.JTable();
+        jTableUsers = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -66,7 +71,7 @@ public class GestionGeneral extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        jTableReviews.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null},
                 {null},
@@ -77,9 +82,9 @@ public class GestionGeneral extends javax.swing.JFrame {
                 "Reviews"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(jTableReviews);
 
-        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+        jTableUsers.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null},
                 {null},
@@ -90,7 +95,7 @@ public class GestionGeneral extends javax.swing.JFrame {
                 "Users"
             }
         ));
-        jScrollPane2.setViewportView(jTable2);
+        jScrollPane2.setViewportView(jTableUsers);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -114,7 +119,36 @@ public class GestionGeneral extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+    public void iniciaTablas() {    
+        //Lógica para acceder a la BBDD
+        DataAccess da = new DataAccess();
+        ArrayList<Usuari> usuaris = da.getUsuaris();
+        DefaultTableModel model = (javax.swing.table.DefaultTableModel) jTableUsers.getModel();
+        model.setRowCount(0);
+        
+        for (Usuari u : usuaris) {
+            if (!findUser(u))
+            //txaShowInfoUsers.append(u.getId() + " " + u.getNom() + " " + u.getPasswordHash().substring(0,5) + " " + u.getEmail() + " " + u.isIsInstructor() + "\n");
+            model.addRow(new Object[]{
+            u.getId(), // Ajusta esto si necesitas el ID o un nombre diferente
+            u.getNom(), // Si tienes este campo en la clase Usuari
+            u.getPasswordHash().substring(0,5), 
+            u.getEmail(), // Ajusta para reflejar otro atributo que tengas en Usuari
+            u.isIsInstructor()
+        });
+        }
+    }                                           
 
+    public boolean findUser(Usuari client) {
+        boolean existe = false;
+        DefaultTableModel dtm = (DefaultTableModel)jTableUsers.getModel();
+        for (int i = 0; i < dtm.getRowCount(); i++) {
+            if (dtm.getValueAt(i, 0).equals(client.getId())) {
+                existe = true;
+            }
+        }
+        return existe;
+    }
     /**
      * @param args the command line arguments
      */
@@ -156,8 +190,8 @@ public class GestionGeneral extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTable jTable2;
+    private javax.swing.JTable jTableReviews;
+    private javax.swing.JTable jTableUsers;
     private javax.swing.JTextArea jTextArea1;
     // End of variables declaration//GEN-END:variables
 }
