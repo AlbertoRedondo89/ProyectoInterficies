@@ -6,61 +6,61 @@ package spdvi.adminusers.dto;
 
 public class Usuari {
     
-    private int Id;
-    private String Nom;
-    private String Email;
-    private String PasswordHash;
-    private byte[] Foto;
-    private boolean IsInstructor;
+    private int id;
+    private String nom;
+    private String email;
+    private String passwordHash;
+    private byte[] foto;
+    private boolean isInstructor;
 
     
     
     public int getId() {
-        return Id;
+        return id;
     }
 
     public void setId(int Id) {
-        this.Id = Id;
+        this.id = Id;
     }
 
     public String getNom() {
-        return Nom;
+        return nom;
     }
 
     public void setNom(String Nom) {
-        this.Nom = Nom;
+        this.nom = Nom;
     }
 
     public String getEmail() {
-        return Email;
+        return email;
     }
 
     public void setEmail(String Email) {
-        this.Email = Email;
+        this.email = Email;
     }
 
     public String getPasswordHash() {
-        return PasswordHash;
+        return passwordHash;
     }
 
     public void setPasswordHash(String PasswordHash) {
-        this.PasswordHash = PasswordHash;
+        this.passwordHash = PasswordHash;
     }
 
     public byte[] getFoto() {
-        return Foto;
+        return foto;
     }
 
     public void setFoto(byte[] Foto) {
-        this.Foto = Foto;
+        this.foto = Foto;
     }
 
     public boolean isIsInstructor() {
-        return IsInstructor;
+        return isInstructor;
     }
 
     public void setIsInstructor(boolean IsInstructor) {
-        this.IsInstructor = IsInstructor;
+        this.isInstructor = IsInstructor;
     }
     
     
