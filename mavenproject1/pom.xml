@@ -10,4 +10,5 @@
         <maven.compiler.release>21</maven.compiler.release>
         <exec.mainClass>spdvi.Mavenproject1</exec.mainClass>
     </properties>
+    <name>AdminUsersGim</name>
 </project>
