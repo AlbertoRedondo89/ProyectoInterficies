@@ -4,19 +4,13 @@
  */
 package spdvi.adminusers;
 
-import javax.swing.table.DefaultTableModel;
-import spdvi.adminusers.dataaccess.DataAccess;
-import spdvi.adminusers.dto.Usuari;
+import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JLabel;
+import javax.swing.SwingConstants;
 
-/**
- *
- * @author alber
- */
 public class MainForm extends javax.swing.JFrame {
 
-    /**
-     * Creates new form MainForm
-     */
     public MainForm() {
         initComponents();
     }
@@ -73,10 +67,17 @@ public class MainForm extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButtonLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonLoginActionPerformed
-         Loguin login = new Loguin();
-         login.setVisible(true);
+
+        Login login = new Login(this);
+        login.setSize(300, 200);
+        login.setVisible(true);
     }//GEN-LAST:event_jButtonLoginActionPerformed
 
+    public void abrirMEnuPrincipal() {
+        GestionGeneral gestion = new GestionGeneral(this);
+        gestion.setVisible(true);
+        this.setVisible(false);
+    }
     /**
      * @param args the command line arguments
      */

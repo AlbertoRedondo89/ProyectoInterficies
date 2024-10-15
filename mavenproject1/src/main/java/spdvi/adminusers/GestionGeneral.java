@@ -5,6 +5,7 @@
 package spdvi.adminusers;
 
 import java.util.ArrayList;
+import javax.swing.JFrame;
 import javax.swing.table.DefaultTableModel;
 import spdvi.adminusers.dataaccess.DataAccess;
 import spdvi.adminusers.dto.Usuari;
@@ -15,11 +16,16 @@ import spdvi.adminusers.dto.Usuari;
  */
 public class GestionGeneral extends javax.swing.JFrame {
 
-    /**
-     * Creates new form GestionGeneral
-     */
-    public GestionGeneral() {
+    private MainForm pare;
+    private DataAccess da = new DataAccess();
+    //private JFrame pare; 
+    
+    public GestionGeneral(){}
+    
+    public GestionGeneral(MainForm pare) {
+        this.pare = pare;
         initComponents();
+        iniciaTablaUsers();
     }
 
     /**
@@ -102,9 +108,9 @@ public class GestionGeneral extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 254, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 555, Short.MAX_VALUE)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -119,9 +125,10 @@ public class GestionGeneral extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-    public void iniciaTablas() {    
+    
+    public void iniciaTablaUsers() {    
         //Lógica para acceder a la BBDD
-        DataAccess da = new DataAccess();
+        da = new DataAccess();
         ArrayList<Usuari> usuaris = da.getUsuaris();
         DefaultTableModel model = (javax.swing.table.DefaultTableModel) jTableUsers.getModel();
         model.setRowCount(0);
@@ -130,11 +137,7 @@ public class GestionGeneral extends javax.swing.JFrame {
             if (!findUser(u))
             //txaShowInfoUsers.append(u.getId() + " " + u.getNom() + " " + u.getPasswordHash().substring(0,5) + " " + u.getEmail() + " " + u.isIsInstructor() + "\n");
             model.addRow(new Object[]{
-            u.getId(), // Ajusta esto si necesitas el ID o un nombre diferente
-            u.getNom(), // Si tienes este campo en la clase Usuari
-            u.getPasswordHash().substring(0,5), 
-            u.getEmail(), // Ajusta para reflejar otro atributo que tengas en Usuari
-            u.isIsInstructor()
+            u.getNom()
         });
         }
     }                                           
