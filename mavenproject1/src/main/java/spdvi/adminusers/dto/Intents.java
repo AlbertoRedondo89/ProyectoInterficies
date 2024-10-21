@@ -43,7 +43,7 @@ public class Intents {
     public void setIdUsuari(int idUsuari) {
         this.idUsuari = idUsuari;
     }
-
+    
     public int getIdExercici() {
         return idExercici;
     }

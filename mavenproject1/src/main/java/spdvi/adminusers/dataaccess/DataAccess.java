@@ -2,13 +2,18 @@
 package spdvi.adminusers.dataaccess;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
+import static java.time.LocalDateTime.now;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import spdvi.adminusers.dto.Intents;
+import spdvi.adminusers.dto.Review;
 import spdvi.adminusers.dto.Usuari;
 
 
@@ -110,6 +115,42 @@ public class DataAccess {
         }
         
         return userId;
+    }
+    
+    public ArrayList<Intents> getIntents() {
+        ArrayList<Intents> intents = new ArrayList<>();
+        String sql = "SELECT * from Intents where Id NOT IN (SELECT IdIntent from Review)";
+        
+        Connection connection = getConnection();
+        
+        try {
+            PreparedStatement selectStatement = connection.prepareStatement(sql);
+            ResultSet set = selectStatement.executeQuery();
+            while (set.next()) {
+            
+                Intents intent = new Intents();
+                        intent.setId(set.getInt("Id"));
+                        intent.setIdUsuari(set.getInt("IdUsuari"));
+                        intent.setIdExercici(set.getInt("IdExercici"));
+                        // Estos valores los guardo previamente en una variable para convertirlos después a un tipo compatible
+                        Timestamp inici = set.getTimestamp("Timestamp_Inici");
+                        Timestamp fi = set.getTimestamp("Timestamp_Fi");
+                        String vid = set.getString("Videofile");
+                        if(inici != null) intent.setInici(inici.toLocalDateTime());
+                        if(fi != null) intent.setFi(fi.toLocalDateTime());
+                        intent.setVideofile(vid.toCharArray());   
+                        
+                        intents.add(intent);
+            }
+            selectStatement.close();
+            connection.close();
+            
+        }catch (SQLException ex){
+            System.out.println("mal");
+        }
+               
+        
+        return intents;
     }
     
 }

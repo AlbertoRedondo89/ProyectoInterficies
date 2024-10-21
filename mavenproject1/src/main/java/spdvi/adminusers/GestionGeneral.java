@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import javax.swing.JFrame;
 import javax.swing.table.DefaultTableModel;
 import spdvi.adminusers.dataaccess.DataAccess;
+import spdvi.adminusers.dto.Intents;
 import spdvi.adminusers.dto.Usuari;
 
 /**
@@ -26,6 +27,7 @@ public class GestionGeneral extends javax.swing.JFrame {
         this.pare = pare;
         initComponents();
         iniciaTablaUsers();
+        iniciaTablaIntents();
     }
 
     /**
@@ -130,7 +132,7 @@ public class GestionGeneral extends javax.swing.JFrame {
         //Lógica para acceder a la BBDD
         da = new DataAccess();
         ArrayList<Usuari> usuaris = da.getUsuaris();
-        DefaultTableModel model = (javax.swing.table.DefaultTableModel) jTableUsers.getModel();
+        DefaultTableModel model = (DefaultTableModel) jTableUsers.getModel();
         model.setRowCount(0);
         
         for (Usuari u : usuaris) {
@@ -140,7 +142,21 @@ public class GestionGeneral extends javax.swing.JFrame {
             u.getNom()
         });
         }
-    }                                           
+    }    
+    
+    public void iniciaTablaIntents() {
+        da = new DataAccess();
+        ArrayList<Intents> intents = da.getIntents();
+        
+        DefaultTableModel model = (DefaultTableModel)jTableReviews.getModel();
+        model.setRowCount(0);
+        
+        for (Intents i : intents) {
+            model.addRow(new Object[] {
+            i.getId()
+            });
+        }
+    }
 
     public boolean findUser(Usuari client) {
         boolean existe = false;
