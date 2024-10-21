@@ -17,5 +17,21 @@
             <artifactId>mssql-jdbc</artifactId>
             <version>9.4.0.jre8</version> <!-- O la versión más reciente -->
         </dependency>
-    </dependencies>
+        <!-- https://mvnrepository.com/artifact/uk.co.caprica/vlcj -->
+       <dependency>
+            <groupId>uk.co.caprica</groupId>
+            <artifactId>vlcj</artifactId>
+            <version>5.0.0-M1</version>
+        </dependency>
+        <dependency>
+            <groupId>uk.co.caprica</groupId>
+            <artifactId>vlcj-natives</artifactId>
+            <version>5.0.0-M1</version>
+        </dependency>
+        <dependency>
+            <groupId>net.java.dev.jna</groupId>
+            <artifactId>jna</artifactId>
+            <version>5.14.0</version> <!-- o la última versión disponible -->
+        </dependency>
+        </dependencies>
 </project>

@@ -4,12 +4,15 @@
  */
 package spdvi.adminusers;
 
+import java.awt.BorderLayout;
 import java.util.ArrayList;
+import javax.swing.DefaultListModel;
 import javax.swing.JFrame;
 import javax.swing.table.DefaultTableModel;
 import spdvi.adminusers.dataaccess.DataAccess;
 import spdvi.adminusers.dto.Intents;
 import spdvi.adminusers.dto.Usuari;
+import uk.co.caprica.vlcj.player.component.EmbeddedMediaPlayerComponent;
 
 /**
  *
@@ -19,15 +22,22 @@ public class GestionGeneral extends javax.swing.JFrame {
 
     private MainForm pare;
     private DataAccess da = new DataAccess();
+    private EmbeddedMediaPlayerComponent mediaPlayer;
     //private JFrame pare; 
     
     public GestionGeneral(){}
     
     public GestionGeneral(MainForm pare) {
         this.pare = pare;
+        
+        System.setProperty("jna.library.path", "C:\\Program Files\\VideoLAN\\VLC");
+        System.setProperty("VLC_PLUGIN_PATH", "C:\\Program Files\\VideoLAN\\VLC\\plugins");
+        
         initComponents();
         iniciaTablaUsers();
         iniciaTablaIntents();
+        mediaPlayer = new EmbeddedMediaPlayerComponent();
+        jPanelVideo.add(mediaPlayer, BorderLayout.CENTER);
     }
 
     /**
@@ -43,10 +53,11 @@ public class GestionGeneral extends javax.swing.JFrame {
         jLabelReviewTitle = new javax.swing.JLabel();
         jScrollPane3 = new javax.swing.JScrollPane();
         jTextArea1 = new javax.swing.JTextArea();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTableReviews = new javax.swing.JTable();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTableUsers = new javax.swing.JTable();
+        jPanelVideo = new javax.swing.JPanel();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        jListIntents = new javax.swing.JList<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -78,19 +89,6 @@ public class GestionGeneral extends javax.swing.JFrame {
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
-        jTableReviews.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null},
-                {null},
-                {null},
-                {null}
-            },
-            new String [] {
-                "Reviews"
-            }
-        ));
-        jScrollPane1.setViewportView(jTableReviews);
-
         jTableUsers.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null},
@@ -104,25 +102,39 @@ public class GestionGeneral extends javax.swing.JFrame {
         ));
         jScrollPane2.setViewportView(jTableUsers);
 
+        jPanelVideo.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        jPanelVideo.setLayout(new java.awt.BorderLayout());
+
+        jScrollPane4.setViewportView(jListIntents);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap()
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanelVideo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 346, Short.MAX_VALUE)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 346, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jPanelVideo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 317, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         pack();
@@ -148,14 +160,15 @@ public class GestionGeneral extends javax.swing.JFrame {
         da = new DataAccess();
         ArrayList<Intents> intents = da.getIntents();
         
-        DefaultTableModel model = (DefaultTableModel)jTableReviews.getModel();
-        model.setRowCount(0);
+        DefaultListModel model =  new DefaultListModel();
         
         for (Intents i : intents) {
-            model.addRow(new Object[] {
-            i.getId()
-            });
+            String intent = "num: " + i.getId();
+            model.addElement(intent);
         }
+        jListIntents.removeAll();
+        jListIntents.setModel(model);
+        
     }
 
     public boolean findUser(Usuari client) {
@@ -194,7 +207,7 @@ public class GestionGeneral extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(GestionGeneral.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-
+        
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
@@ -205,11 +218,12 @@ public class GestionGeneral extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabelReviewTitle;
+    private javax.swing.JList<String> jListIntents;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JPanel jPanelVideo;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JTable jTableReviews;
+    private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JTable jTableUsers;
     private javax.swing.JTextArea jTextArea1;
     // End of variables declaration//GEN-END:variables
