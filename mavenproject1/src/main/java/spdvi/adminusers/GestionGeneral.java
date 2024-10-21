@@ -29,15 +29,13 @@ public class GestionGeneral extends javax.swing.JFrame {
     
     public GestionGeneral(MainForm pare) {
         this.pare = pare;
-        
         System.setProperty("jna.library.path", "C:\\Program Files\\VideoLAN\\VLC");
         System.setProperty("VLC_PLUGIN_PATH", "C:\\Program Files\\VideoLAN\\VLC\\plugins");
-        
         initComponents();
-        iniciaTablaUsers();
-        iniciaTablaIntents();
         mediaPlayer = new EmbeddedMediaPlayerComponent();
         jPanelVideo.add(mediaPlayer, BorderLayout.CENTER);
+        iniciaTablaUsers();
+        iniciaTablaIntents();
     }
 
     /**
@@ -105,6 +103,11 @@ public class GestionGeneral extends javax.swing.JFrame {
         jPanelVideo.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         jPanelVideo.setLayout(new java.awt.BorderLayout());
 
+        jListIntents.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
+            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
+                jListIntentsValueChanged(evt);
+            }
+        });
         jScrollPane4.setViewportView(jListIntents);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -139,6 +142,24 @@ public class GestionGeneral extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    // ------------------------------------------------------------------------------------------------------------------------ SELECCIONAR INTENTO - VIDEO
+    private void jListIntentsValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_jListIntentsValueChanged
+            if (evt.getValueIsAdjusting()) return;
+            
+            String cell = jListIntents.getSelectedValue();
+            String[] partCell = cell.split(": ");
+            int id = Integer.parseInt(partCell[1]);
+            
+            da = new DataAccess();
+            ArrayList<Intents> intents = da.getIntents();
+               for (Intents i : intents) {
+                   if (i.getId() == id) {
+                       mediaPlayer.mediaPlayer().media().play(new String(i.getVideofile()));
+                       System.out.print(new String(i.getVideofile()));
+                   }
+               }
+    }//GEN-LAST:event_jListIntentsValueChanged
     
     public void iniciaTablaUsers() {    
         //Lógica para acceder a la BBDD
