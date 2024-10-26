@@ -24,9 +24,10 @@ public class GestionGeneral extends javax.swing.JFrame {
     private DataAccess da = new DataAccess();
     private EmbeddedMediaPlayerComponent mediaPlayer;
     //private JFrame pare; 
-    
-    public GestionGeneral(){}
-    
+
+    public GestionGeneral() {
+    }
+
     public GestionGeneral(MainForm pare) {
         this.pare = pare;
         System.setProperty("jna.library.path", "C:\\Program Files\\VideoLAN\\VLC");
@@ -145,56 +146,59 @@ public class GestionGeneral extends javax.swing.JFrame {
 
     // ------------------------------------------------------------------------------------------------------------------------ SELECCIONAR INTENTO - VIDEO
     private void jListIntentsValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_jListIntentsValueChanged
-            if (evt.getValueIsAdjusting()) return;
-            
-            String cell = jListIntents.getSelectedValue();
-            String[] partCell = cell.split(": ");
-            int id = Integer.parseInt(partCell[1]);
-            
-            da = new DataAccess();
-            ArrayList<Intents> intents = da.getIntents();
-               for (Intents i : intents) {
-                   if (i.getId() == id) {
-                       mediaPlayer.mediaPlayer().media().play(new String(i.getVideofile()));
-                       System.out.print(new String(i.getVideofile()));
-                   }
-               }
+        if (evt.getValueIsAdjusting()) {
+            return;
+        }
+
+        String cell = jListIntents.getSelectedValue();
+        String[] partCell = cell.split(": ");
+        int id = Integer.parseInt(partCell[1]);
+
+        da = new DataAccess();
+        ArrayList<Intents> intents = da.getIntents();
+        for (Intents i : intents) {
+            if (i.getId() == id) {
+                mediaPlayer.mediaPlayer().media().play(new String("ProyectoInterficies\\mavenproject1\\Resource\\" + i.getVideofile()));
+                System.out.print(new String(i.getVideofile()));
+            }
+        }
     }//GEN-LAST:event_jListIntentsValueChanged
-    
-    public void iniciaTablaUsers() {    
+
+    public void iniciaTablaUsers() {
         //Lógica para acceder a la BBDD
         da = new DataAccess();
         ArrayList<Usuari> usuaris = da.getUsuaris();
         DefaultTableModel model = (DefaultTableModel) jTableUsers.getModel();
         model.setRowCount(0);
-        
+
         for (Usuari u : usuaris) {
-            if (!findUser(u))
-            //txaShowInfoUsers.append(u.getId() + " " + u.getNom() + " " + u.getPasswordHash().substring(0,5) + " " + u.getEmail() + " " + u.isIsInstructor() + "\n");
-            model.addRow(new Object[]{
-            u.getNom()
-        });
+            if (!findUser(u)) //txaShowInfoUsers.append(u.getId() + " " + u.getNom() + " " + u.getPasswordHash().substring(0,5) + " " + u.getEmail() + " " + u.isIsInstructor() + "\n");
+            {
+                model.addRow(new Object[]{
+                    u.getNom()
+                });
+            }
         }
-    }    
-    
+    }
+
     public void iniciaTablaIntents() {
         da = new DataAccess();
         ArrayList<Intents> intents = da.getIntents();
-        
-        DefaultListModel model =  new DefaultListModel();
-        
+
+        DefaultListModel model = new DefaultListModel();
+
         for (Intents i : intents) {
             String intent = "num: " + i.getId();
             model.addElement(intent);
         }
         jListIntents.removeAll();
         jListIntents.setModel(model);
-        
+
     }
 
     public boolean findUser(Usuari client) {
         boolean existe = false;
-        DefaultTableModel dtm = (DefaultTableModel)jTableUsers.getModel();
+        DefaultTableModel dtm = (DefaultTableModel) jTableUsers.getModel();
         for (int i = 0; i < dtm.getRowCount(); i++) {
             if (dtm.getValueAt(i, 0).equals(client.getId())) {
                 existe = true;
@@ -202,6 +206,7 @@ public class GestionGeneral extends javax.swing.JFrame {
         }
         return existe;
     }
+
     /**
      * @param args the command line arguments
      */
@@ -228,7 +233,7 @@ public class GestionGeneral extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(GestionGeneral.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-        
+
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {

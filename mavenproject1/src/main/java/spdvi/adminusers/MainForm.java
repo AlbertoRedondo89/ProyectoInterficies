@@ -4,15 +4,25 @@
  */
 package spdvi.adminusers;
 
-import javax.swing.JButton;
-import javax.swing.JDialog;
+import com.sun.tools.javac.Main;
+import java.awt.Frame;
+import java.awt.Image;
+import javax.swing.ImageIcon;
 import javax.swing.JLabel;
-import javax.swing.SwingConstants;
 
 public class MainForm extends javax.swing.JFrame {
-
+    
     public MainForm() {
         initComponents();
+        jLabel1 = new JLabel();
+        jLabel1.setSize(200, 200);
+        ImageIcon originalIcon = new ImageIcon(Main.class.getResource("/images/logo.png"));
+        Image originalImage = originalIcon.getImage();
+        Image scaledImage = originalImage.getScaledInstance(jLabel1.getWidth(), jLabel1.getHeight(), Image.SCALE_SMOOTH);
+        ImageIcon scaledIcon = new ImageIcon(scaledImage);
+        jLabel1.setIcon(scaledIcon);
+        jLabel1.setVisible(true);
+        
     }
 
     /**
@@ -25,6 +35,7 @@ public class MainForm extends javax.swing.JFrame {
     private void initComponents() {
 
         jButtonLogin = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenuFile = new javax.swing.JMenu();
         jMenuHelp = new javax.swing.JMenu();
@@ -37,6 +48,8 @@ public class MainForm extends javax.swing.JFrame {
                 jButtonLoginActionPerformed(evt);
             }
         });
+
+        jLabel1.setText("jLabel1");
 
         jMenuFile.setText("File");
         jMenuBar1.add(jMenuFile);
@@ -51,14 +64,21 @@ public class MainForm extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(158, 158, 158)
-                .addComponent(jButtonLogin)
-                .addContainerGap(170, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(158, 158, 158)
+                        .addComponent(jButtonLogin))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(52, 52, 52)
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 272, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(67, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(235, Short.MAX_VALUE)
+                .addContainerGap()
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 237, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jButtonLogin)
                 .addGap(19, 19, 19))
         );
@@ -67,17 +87,18 @@ public class MainForm extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButtonLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonLoginActionPerformed
-
+        
         Login login = new Login(this);
         login.setSize(300, 200);
         login.setVisible(true);
     }//GEN-LAST:event_jButtonLoginActionPerformed
-
+    
     public void abrirMEnuPrincipal() {
         GestionGeneral gestion = new GestionGeneral(this);
         gestion.setVisible(true);
         this.setVisible(false);
     }
+
     /**
      * @param args the command line arguments
      */
@@ -115,6 +136,7 @@ public class MainForm extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonLogin;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenu jMenuFile;
     private javax.swing.JMenu jMenuHelp;
