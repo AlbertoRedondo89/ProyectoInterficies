@@ -153,6 +153,60 @@ public class DataAccess {
         return intents;
     }
     
+    public ArrayList<Intents> getIntents2() {
+        ArrayList<Intents> intents = new ArrayList<>();
+        String sql = "SELECT * from Intents";
+        
+        Connection connection = getConnection();
+        
+        try {
+            PreparedStatement selectStatement = connection.prepareStatement(sql);
+            ResultSet set = selectStatement.executeQuery();
+            while (set.next()) {
+            
+                Intents intent = new Intents();
+                        intent.setId(set.getInt("Id"));
+                        intent.setIdUsuari(set.getInt("IdUsuari"));
+                        intent.setIdExercici(set.getInt("IdExercici"));
+                        // Estos valores los guardo previamente en una variable para convertirlos después a un tipo compatible
+                        Timestamp inici = set.getTimestamp("Timestamp_Inici");
+                        Timestamp fi = set.getTimestamp("Timestamp_Fi");
+                        String vid = set.getString("Videofile");
+                        if(inici != null) intent.setInici(inici.toLocalDateTime());
+                        if(fi != null) intent.setFi(fi.toLocalDateTime());
+                        intent.setVideofile(vid.toString());   
+                        
+                        intents.add(intent);
+            }
+            selectStatement.close();
+            connection.close();
+            
+        }catch (SQLException ex){
+            System.out.println("mal");
+        }   
+        return intents;
+    }
+    
+    public ArrayList<Review> getReviews(){
+        ArrayList<Review> reviews = new ArrayList<>();
+        String sql = "SELECT * from Review";
+        Connection connection = getConnection();
+        
+        try (PreparedStatement selectStatement = connection.prepareStatement(sql);
+                ResultSet set = selectStatement.executeQuery()) {
+            while(set.next()) {
+                Review rev = new Review();
+                rev.setId(set.getInt("Id"));
+                rev.setIdIntent(set.getInt("IdIntent"));
+                rev.setIdReviewer(0);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DataAccess.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return reviews;
+    }
+    
     public boolean accesoUsuario(int id, String pssw) {
         boolean autorizado = false;
         ArrayList<Usuari> usuaris = getUsuaris();

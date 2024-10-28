@@ -28,8 +28,6 @@ public class Gestion extends javax.swing.JPanel {
     
     public Gestion(MainForm pare) {
         this.pare = pare;
-        System.setProperty("jna.library.path", "C:\\Program Files\\VideoLAN\\VLC");
-        System.setProperty("VLC_PLUGIN_PATH", "C:\\Program Files\\VideoLAN\\VLC\\plugins");
         initComponents();
         mediaPlayer = new EmbeddedMediaPlayerComponent();
         jPanelVideo.add(mediaPlayer, BorderLayout.CENTER);

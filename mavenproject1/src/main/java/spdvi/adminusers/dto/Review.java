@@ -9,7 +9,7 @@ public class Review {
     
     private int id;
     private int idIntent;
-    private int idReview;
+    private int idReviewer;
     private int valoracio;
     private String comentari;
 
@@ -19,7 +19,7 @@ public class Review {
     public Review(int id, int idIntent, int idReview, int valoracio, String comentari) {
         this.id = id;
         this.idIntent = idIntent;
-        this.idReview = idReview;
+        this.idReviewer = idReview;
         this.valoracio = valoracio;
         this.comentari = comentari;
     }
@@ -40,12 +40,12 @@ public class Review {
         this.idIntent = idIntent;
     }
 
-    public int getIdReview() {
-        return idReview;
+    public int getIdReviewer() {
+        return idReviewer;
     }
 
-    public void setIdReview(int idReview) {
-        this.idReview = idReview;
+    public void setIdReviewer(int idReviewer) {
+        this.idReviewer = idReviewer;
     }
 
     public int getValoracio() {
@@ -66,7 +66,7 @@ public class Review {
 
     @Override
     public String toString() {
-        return "Review{" + "id=" + id + ", idIntent=" + idIntent + ", idReview=" + idReview + ", valoracio=" + valoracio + ", comentari=" + comentari + '}';
+        return "Review{" + "id=" + id + ", idIntent=" + idIntent + ", idReview=" + idReviewer + ", valoracio=" + valoracio + ", comentari=" + comentari + '}';
     }
     
     
