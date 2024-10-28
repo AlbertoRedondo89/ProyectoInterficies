@@ -40,7 +40,7 @@ public class Login extends JDialog{
             public void actionPerformed(ActionEvent e) {
                 String userId = userIdField.getText();
                 String password = new String(passwordField.getPassword());
-                ((MainForm)parent).abrirMEnuPrincipal();
+                ((MainForm)parent).abrirMenuPrincipal(userId, password);
                 dispose();
             }
         });

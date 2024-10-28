@@ -5,23 +5,34 @@
 package spdvi.adminusers;
 
 import com.sun.tools.javac.Main;
+import java.awt.CardLayout;
 import java.awt.Frame;
 import java.awt.Image;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import spdvi.adminusers.dataaccess.DataAccess;
 
 public class MainForm extends javax.swing.JFrame {
     
+    private DataAccess da = new DataAccess();
+    private Gestion gestion;
+    
     public MainForm() {
         initComponents();
-        jLabel1 = new JLabel();
-        jLabel1.setSize(200, 200);
-        ImageIcon originalIcon = new ImageIcon(Main.class.getResource("/images/logo.png"));
-        Image originalImage = originalIcon.getImage();
-        Image scaledImage = originalImage.getScaledInstance(jLabel1.getWidth(), jLabel1.getHeight(), Image.SCALE_SMOOTH);
-        ImageIcon scaledIcon = new ImageIcon(scaledImage);
-        jLabel1.setIcon(scaledIcon);
-        jLabel1.setVisible(true);
+        //ICONO
+        ImageIcon icon = new ImageIcon(getClass().getResource("/images/logo.png"));
+        Image image = icon.getImage().getScaledInstance(jLabel1.getWidth(), jLabel1.getHeight(), Image.SCALE_SMOOTH);
+        jLabel1.setIcon(new ImageIcon(image));
+           //CardLayout para cambiar entree paneles
+           getContentPane().setLayout(new CardLayout());
+
+        //JPANEL GENERAL
+        gestion = new Gestion(this);
+        gestion.setVisible(false);
+        
+        getContentPane().add(jPanelInicio, "inicio");
+        getContentPane().add(gestion, "gestion");
         
     }
 
@@ -34,13 +45,19 @@ public class MainForm extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jButtonLogin = new javax.swing.JButton();
+        jPanelInicio = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
+        jButtonLogin = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenuFile = new javax.swing.JMenu();
         jMenuHelp = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setPreferredSize(new java.awt.Dimension(1200, 800));
+        setResizable(false);
+
+        jLabel1.setText("jLabel2");
+        jLabel1.setAlignmentX(0.5F);
 
         jButtonLogin.setText("Login");
         jButtonLogin.addActionListener(new java.awt.event.ActionListener() {
@@ -49,7 +66,28 @@ public class MainForm extends javax.swing.JFrame {
             }
         });
 
-        jLabel1.setText("jLabel1");
+        javax.swing.GroupLayout jPanelInicioLayout = new javax.swing.GroupLayout(jPanelInicio);
+        jPanelInicio.setLayout(jPanelInicioLayout);
+        jPanelInicioLayout.setHorizontalGroup(
+            jPanelInicioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelInicioLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButtonLogin)
+                .addGap(50, 50, 50))
+            .addGroup(jPanelInicioLayout.createSequentialGroup()
+                .addContainerGap(150, Short.MAX_VALUE)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 509, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(150, Short.MAX_VALUE))
+        );
+        jPanelInicioLayout.setVerticalGroup(
+            jPanelInicioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelInicioLayout.createSequentialGroup()
+                .addContainerGap(150, Short.MAX_VALUE)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 292, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 150, Short.MAX_VALUE)
+                .addComponent(jButtonLogin)
+                .addGap(50, 50, 50))
+        );
 
         jMenuFile.setText("File");
         jMenuBar1.add(jMenuFile);
@@ -63,24 +101,11 @@ public class MainForm extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(158, 158, 158)
-                        .addComponent(jButtonLogin))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(52, 52, 52)
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 272, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(67, Short.MAX_VALUE))
+            .addComponent(jPanelInicio, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 237, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButtonLogin)
-                .addGap(19, 19, 19))
+            .addComponent(jPanelInicio, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
@@ -93,10 +118,14 @@ public class MainForm extends javax.swing.JFrame {
         login.setVisible(true);
     }//GEN-LAST:event_jButtonLoginActionPerformed
     
-    public void abrirMEnuPrincipal() {
-        GestionGeneral gestion = new GestionGeneral(this);
-        gestion.setVisible(true);
-        this.setVisible(false);
+    public void abrirMenuPrincipal(String user, String password) {
+        int id = Integer.parseInt(user);
+        if(da.accesoUsuario(id, password)){
+            CardLayout c1 = (CardLayout)getContentPane().getLayout();
+            c1.show(getContentPane(), "gestion");
+        }else {
+             JOptionPane.showMessageDialog(null, "Usuario incorrecto, pichón");
+        }
     }
 
     /**
@@ -140,5 +169,6 @@ public class MainForm extends javax.swing.JFrame {
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenu jMenuFile;
     private javax.swing.JMenu jMenuHelp;
+    private javax.swing.JPanel jPanelInicio;
     // End of variables declaration//GEN-END:variables
 }

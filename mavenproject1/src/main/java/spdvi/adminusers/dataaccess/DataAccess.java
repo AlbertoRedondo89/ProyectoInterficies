@@ -153,4 +153,18 @@ public class DataAccess {
         return intents;
     }
     
+    public boolean accesoUsuario(int id, String pssw) {
+        boolean autorizado = false;
+        ArrayList<Usuari> usuaris = getUsuaris();
+        for (Usuari user : usuaris) {
+            if (user.getId() == id) {
+                if(user.getPasswordHash().equals(pssw)){
+                    if(user.isIsInstructor()) autorizado = true;
+                }
+            }
+        }
+        
+        return autorizado;
+    }
+    
 }
