@@ -188,12 +188,13 @@ public class Gestion extends javax.swing.JPanel {
         String cell = jListIntents.getSelectedValue();
         String[] partCell = cell.split(": ");
         int id = Integer.parseInt(partCell[1]);
-
+        String archivo = "src\\main\\resources\\videos\\";
         da = new DataAccess();
         ArrayList<Intents> intents = da.getIntents();
         for (Intents i : intents) {
             if (i.getId() == id) {
-                mediaPlayer.mediaPlayer().media().play(new String("ProyectoInterficies\\mavenproject1\\Resource\\" + i.getVideofile()));
+                archivo += i.getVideofile();
+                mediaPlayer.mediaPlayer().media().play(archivo);
                     System.out.print(new String(i.getVideofile()));
                 }
             }

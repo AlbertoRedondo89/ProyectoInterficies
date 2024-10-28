@@ -14,12 +14,12 @@ public class Intents {
     private int idExercici;
     private LocalDateTime inici;
     private LocalDateTime fi;
-    private char[] videofile;
+    private String videofile;
 
     public Intents() {
     }
 
-    public Intents(int id, int idUsuari, int idExercici, LocalDateTime inici, LocalDateTime fi, char[] videofile) {
+    public Intents(int id, int idUsuari, int idExercici, LocalDateTime inici, LocalDateTime fi, String videofile) {
         this.id = id;
         this.idUsuari = idUsuari;
         this.idExercici = idExercici;
@@ -68,11 +68,11 @@ public class Intents {
         this.fi = fi;
     }
 
-    public char[] getVideofile() {
+    public String getVideofile() {
         return videofile;
     }
 
-    public void setVideofile(char[] videofile) {
+    public void setVideofile(String videofile) {
         this.videofile = videofile;
     }
 

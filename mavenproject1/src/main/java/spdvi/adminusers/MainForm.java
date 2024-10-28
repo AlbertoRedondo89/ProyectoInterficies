@@ -119,13 +119,13 @@ public class MainForm extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonLoginActionPerformed
     
     public void abrirMenuPrincipal(String user, String password) {
-        int id = Integer.parseInt(user);
-        if(da.accesoUsuario(id, password)){
+ //       int id = Integer.parseInt(user);
+     //   if(da.accesoUsuario(id, password)){
             CardLayout c1 = (CardLayout)getContentPane().getLayout();
             c1.show(getContentPane(), "gestion");
-        }else {
-             JOptionPane.showMessageDialog(null, "Usuario incorrecto, pichón");
-        }
+     //   }else {
+     //        JOptionPane.showMessageDialog(null, "Usuario incorrecto, pichón");
+       // }
     }
 
     /**

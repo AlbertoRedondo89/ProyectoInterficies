@@ -138,7 +138,7 @@ public class DataAccess {
                         String vid = set.getString("Videofile");
                         if(inici != null) intent.setInici(inici.toLocalDateTime());
                         if(fi != null) intent.setFi(fi.toLocalDateTime());
-                        intent.setVideofile(vid.toCharArray());   
+                        intent.setVideofile(vid.toString());   
                         
                         intents.add(intent);
             }
