@@ -12,7 +12,7 @@ import spdvi.adminusers.dto.Review;
 import spdvi.adminusers.dto.Usuari;
 
 public class Logica {
-    
+
     private DataAccess da = new DataAccess();
     private ArrayList<Usuari> usuaris = new ArrayList<>();
     private ArrayList<Exercici> exercicis = new ArrayList<>();
@@ -21,9 +21,41 @@ public class Logica {
 
     public Logica() {
         usuaris = da.getUsuaris();
-        exercici = da.getExercicis();
+        exercicis = da.getExercicis();
         intents = da.getIntents2();
         reviews = da.getReviews();
     }
-    
+
+    public ArrayList<Usuari> getUsuaris() {
+        return usuaris;
+    }
+
+    public void setUsuaris(ArrayList<Usuari> usuaris) {
+        this.usuaris = usuaris;
+    }
+
+    public ArrayList<Exercici> getExercicis() {
+        return exercicis;
+    }
+
+    public void setExercicis(ArrayList<Exercici> exercicis) {
+        this.exercicis = exercicis;
+    }
+
+    public ArrayList<Intents> getIntents() {
+        return intents;
+    }
+
+    public void setIntents(ArrayList<Intents> intents) {
+        this.intents = intents;
+    }
+
+    public ArrayList<Review> getReviews() {
+        return reviews;
+    }
+
+    public void setReviews(ArrayList<Review> reviews) {
+        this.reviews = reviews;
+    }
+
 }

@@ -8,6 +8,7 @@ spdvi\adminusers\dto\Exercici.class
 spdvi\adminusers\Login$1.class
 spdvi\adminusers\dto\Intents.class
 spdvi\adminusers\dto\Usuari.class
+spdvi\adminusers\logica\Logica.class
 spdvi\adminusers\GestionGeneral$1.class
 spdvi\adminusers\MainForm$1.class
 spdvi\adminusers\dataaccess\DataAccess.class
