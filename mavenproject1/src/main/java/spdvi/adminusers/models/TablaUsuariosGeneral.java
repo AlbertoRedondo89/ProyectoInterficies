@@ -42,4 +42,13 @@ public class TablaUsuariosGeneral extends AbstractTableModel{
         return null;
     }
     
+    @Override
+    public String getColumnName(int column) {
+        return columnas[column];
+    }
+    
+    public Usuari getUser(int row) {
+        return usuarios.get(row);
+    }
+    
 }

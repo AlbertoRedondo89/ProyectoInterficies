@@ -2,6 +2,7 @@ spdvi\adminusers\dto\Intent.class
 spdvi\adminusers\Gestion.class
 spdvi\adminusers\GestionGeneral.class
 spdvi\adminusers\MainForm.class
+spdvi\adminusers\Gestion$4.class
 spdvi\adminusers\Login.class
 spdvi\adminusers\Gestion$1.class
 spdvi\adminusers\MainForm$2.class

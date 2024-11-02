@@ -15,7 +15,7 @@ import spdvi.adminusers.logica.Logica;
  */
 public class TablaIntentosGeneral extends AbstractTableModel{
 
-    String[] columnas = {"Id_Intento", "IdUsuari"};
+    String[] columnas = {"Id_Intento", "IdUsuari", "Inicio"};
     ArrayList<Intent> intentos = new ArrayList<>();
     
     public TablaIntentosGeneral(ArrayList<Intent> intentos) {
@@ -42,8 +42,16 @@ public class TablaIntentosGeneral extends AbstractTableModel{
             case 1 -> {
                 return intentos.get(rowIndex).getIdUsuari();
             }
+            case 2 -> {
+                return intentos.get(rowIndex).getInici();
+            }   
         }
         return null;
+    }
+    
+    @Override
+    public String getColumnName(int column) {
+        return columnas[column];
     }
     
     public Intent getIntent(int rowIndex) {

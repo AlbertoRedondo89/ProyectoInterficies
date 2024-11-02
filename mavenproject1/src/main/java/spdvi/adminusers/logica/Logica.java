@@ -82,7 +82,6 @@ public class Logica {
         for(Intent inten : intents) {
                 if (inten.getIdUsuari() == id )intentosUsuario.add(inten);
         }
-        
         return intentosUsuario;
     } 
     
@@ -91,6 +90,14 @@ public class Logica {
             if (ex.getId() == intento) return ex.getNomExercici();
         }
         return null;
+    }
+    
+    public Review getReview(int id) {
+        Review rev = null;
+        for (Review review : reviews){
+            if(review.getIdIntent() == id) return review;
+        }
+        return rev;
     }
 
 }
