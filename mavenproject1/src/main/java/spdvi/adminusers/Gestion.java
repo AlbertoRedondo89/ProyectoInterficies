@@ -9,10 +9,11 @@ import java.util.ArrayList;
 import javax.swing.DefaultListModel;
 import javax.swing.table.DefaultTableModel;
 import spdvi.adminusers.dataaccess.DataAccess;
-import spdvi.adminusers.dto.Intents;
+import spdvi.adminusers.dto.Intent;
 import spdvi.adminusers.dto.Usuari;
 import spdvi.adminusers.logica.Logica;
 import spdvi.adminusers.models.TablaIntentosGeneral;
+import spdvi.adminusers.models.TablaUsuariosGeneral;
 import uk.co.caprica.vlcj.player.component.EmbeddedMediaPlayerComponent;
 
 /**
@@ -38,35 +39,25 @@ public class Gestion extends javax.swing.JPanel {
         jPanelVideo.add(mediaPlayer, BorderLayout.CENTER);
         iniciaTablaUsers();
         iniciaTablaIntents();
+        jTableIntents.changeSelection(0, 0, false, false);
     }
 
     
      public void iniciaTablaUsers() {
-        //Lógica para acceder a la BBDD
-        da = new DataAccess();
-        ArrayList<Usuari> usuaris = da.getUsuaris();
-        DefaultTableModel model = (DefaultTableModel) jTableUsers.getModel();
-        model.setRowCount(0);
-
-        for (Usuari u : usuaris) {
-            if (!findUser(u)) //txaShowInfoUsers.append(u.getId() + " " + u.getNom() + " " + u.getPasswordHash().substring(0,5) + " " + u.getEmail() + " " + u.isIsInstructor() + "\n");
-            {
-                model.addRow(new Object[]{
-                    u.getNom()
-                });
-            }
-        }
+         ArrayList<Usuari> users = logica.getUsuaris();
+         TablaUsuariosGeneral tablaUsers = new TablaUsuariosGeneral(users);
+         jTableUsers.removeAll();
+         jTableUsers.setModel(tablaUsers);
     }
 
     public void iniciaTablaIntents() {
-        ArrayList<Intents> intents = logica.getIntents();
-        TablaIntentosGeneral intentos = new TablaIntentosGeneral(intents);
-
+        ArrayList<Intent> intents = logica.getIntents();
+        TablaIntentosGeneral tablaIntentos = new TablaIntentosGeneral(intents);
         jTableIntents.removeAll();
-        jTableIntents.setModel(intentos);
-
+        jTableIntents.setModel(tablaIntentos);
     }
-    
+    /*    // ------------------------------------------------------------------------------------------------------------------------------------------METODO ELIMINADO TEMPORALMENTE
+
     public boolean findUser(Usuari client) {
         boolean existe = false;
         DefaultTableModel dtm = (DefaultTableModel) jTableUsers.getModel();
@@ -226,8 +217,18 @@ public class Gestion extends javax.swing.JPanel {
         );
 
         jButtonMuestraTodos.setText("Todos");
+        jButtonMuestraTodos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonMuestraTodosActionPerformed(evt);
+            }
+        });
 
         jButtonMuestraPendientes.setText("Pendientes");
+        jButtonMuestraPendientes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonMuestraPendientesActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -269,22 +270,45 @@ public class Gestion extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    // ------------------------------------------------------------------------------------------------------------------------------------------ACTIVADOR DE VIDEO AL CLICAR EN LA TABLA
     private void jTableIntentsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTableIntentsMouseClicked
-        // TODO add your handling code here:
 
         int row = jTableIntents.getSelectedRow();
-        int id = (int) jTableIntents.getValueAt(row, 0);
-        String archivo = "src\\main\\resources\\videos\\";
-
-        ArrayList<Intents> intents = logica.getIntents();
-        for (Intents i : intents) {
-            if (i.getId() == id) {
-                archivo += i.getVideofile();
-                mediaPlayer.mediaPlayer().media().play(archivo);
-                System.out.print(i.getVideofile());
-            }
+        if (row != -1) {
+            playVid(row);
         }
     }//GEN-LAST:event_jTableIntentsMouseClicked
+    
+    private void playVid(int n) {
+            TablaIntentosGeneral modelo = (TablaIntentosGeneral) jTableIntents.getModel();
+            Intent intento = modelo.getIntent(n);
+            String video = intento.getVideofile();
+            String archivo = "src\\main\\resources\\videos\\" + video;
+            mediaPlayer.mediaPlayer().media().play(archivo);
+            
+            jLabelNombreEjercicio.setText(logica.getNombreEjercicio(intento.getIdExercici()));
+            jLabelFechaEjercicio.setText(intento.getInici().toString());
+    }
+    
+    // ------------------------------------------------------------------------------------------------------------------------------------------BOTON VISUALIZAR TODAS LAS REVIEWS
+    private void jButtonMuestraTodosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonMuestraTodosActionPerformed
+        // TODO add your handling code here:
+        ArrayList<Intent> intents = logica.getIntents();
+        TablaIntentosGeneral tablaIntentos = new TablaIntentosGeneral(intents);
+
+        jTableIntents.removeAll();
+        jTableIntents.setModel(tablaIntentos);
+    }//GEN-LAST:event_jButtonMuestraTodosActionPerformed
+    
+    // ------------------------------------------------------------------------------------------------------------------------------------------BOTON VISUALIZAR REVIEWS PENDIENTES
+    private void jButtonMuestraPendientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonMuestraPendientesActionPerformed
+        // TODO add your handling code here:
+        ArrayList<Intent> intents = logica.getIntentsSinReview();
+        TablaIntentosGeneral tablaIntentos = new TablaIntentosGeneral(intents);
+
+        jTableIntents.removeAll();
+        jTableIntents.setModel(tablaIntentos);
+    }//GEN-LAST:event_jButtonMuestraPendientesActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

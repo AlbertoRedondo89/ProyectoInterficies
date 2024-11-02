@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import spdvi.adminusers.dto.Exercici;
-import spdvi.adminusers.dto.Intents;
+import spdvi.adminusers.dto.Intent;
 import spdvi.adminusers.dto.Review;
 import spdvi.adminusers.dto.Usuari;
 
@@ -119,8 +119,8 @@ public class DataAccess {
         return userId;
     }
     
-    public ArrayList<Intents> getIntents() {
-        ArrayList<Intents> intents = new ArrayList<>();
+    public ArrayList<Intent> getIntents() {
+        ArrayList<Intent> intents = new ArrayList<>();
         String sql = "SELECT * from Intents where Id NOT IN (SELECT IdIntent from Review)";
         
         Connection connection = getConnection();
@@ -130,7 +130,7 @@ public class DataAccess {
             ResultSet set = selectStatement.executeQuery();
             while (set.next()) {
             
-                Intents intent = new Intents();
+                Intent intent = new Intent();
                         intent.setId(set.getInt("Id"));
                         intent.setIdUsuari(set.getInt("IdUsuari"));
                         intent.setIdExercici(set.getInt("IdExercici"));
@@ -158,8 +158,8 @@ public class DataAccess {
     // ---------------------------------------------------------------------------------- INTENTS --------------------------
     //--------------------------------------------------------------------------------------------------------------------------------------------------------------------
     
-    public ArrayList<Intents> getIntents2() {
-        ArrayList<Intents> intents = new ArrayList<>();
+    public ArrayList<Intent> getIntents2() {
+        ArrayList<Intent> intents = new ArrayList<>();
         String sql = "SELECT * from Intents";
         
         Connection connection = getConnection();
@@ -169,7 +169,7 @@ public class DataAccess {
             ResultSet set = selectStatement.executeQuery();
             while (set.next()) {
             
-                Intents intent = new Intents();
+                Intent intent = new Intent();
                         intent.setId(set.getInt("Id"));
                         intent.setIdUsuari(set.getInt("IdUsuari"));
                         intent.setIdExercici(set.getInt("IdExercici"));

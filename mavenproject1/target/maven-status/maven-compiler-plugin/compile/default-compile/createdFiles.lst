@@ -1,3 +1,4 @@
+spdvi\adminusers\dto\Intent.class
 spdvi\adminusers\Gestion.class
 spdvi\adminusers\GestionGeneral.class
 spdvi\adminusers\MainForm.class
@@ -6,10 +7,12 @@ spdvi\adminusers\Gestion$1.class
 spdvi\adminusers\MainForm$2.class
 spdvi\adminusers\dto\Exercici.class
 spdvi\adminusers\Login$1.class
-spdvi\adminusers\dto\Intents.class
+spdvi\adminusers\Gestion$3.class
 spdvi\adminusers\dto\Usuari.class
+spdvi\adminusers\models\TablaUsuariosGeneral.class
 spdvi\adminusers\logica\Logica.class
 spdvi\adminusers\GestionGeneral$1.class
+spdvi\adminusers\Gestion$2.class
 spdvi\adminusers\MainForm$1.class
 spdvi\adminusers\dataaccess\DataAccess.class
 spdvi\adminusers\GestionGeneral$2.class

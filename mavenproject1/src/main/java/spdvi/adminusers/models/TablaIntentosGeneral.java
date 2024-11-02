@@ -6,7 +6,7 @@ package spdvi.adminusers.models;
 
 import java.util.ArrayList;
 import javax.swing.table.AbstractTableModel;
-import spdvi.adminusers.dto.Intents;
+import spdvi.adminusers.dto.Intent;
 import spdvi.adminusers.logica.Logica;
 
 /**
@@ -16,9 +16,9 @@ import spdvi.adminusers.logica.Logica;
 public class TablaIntentosGeneral extends AbstractTableModel{
 
     String[] columnas = {"Id_Intento", "IdUsuari"};
-    ArrayList<Intents> intentos = new ArrayList<>();
+    ArrayList<Intent> intentos = new ArrayList<>();
     
-    public TablaIntentosGeneral(ArrayList<Intents> intentos) {
+    public TablaIntentosGeneral(ArrayList<Intent> intentos) {
         this.intentos = intentos;
     }
     
@@ -42,9 +42,12 @@ public class TablaIntentosGeneral extends AbstractTableModel{
             case 1 -> {
                 return intentos.get(rowIndex).getIdUsuari();
             }
-        
         }
         return null;
+    }
+    
+    public Intent getIntent(int rowIndex) {
+        return intentos.get(rowIndex);
     }
    
 }

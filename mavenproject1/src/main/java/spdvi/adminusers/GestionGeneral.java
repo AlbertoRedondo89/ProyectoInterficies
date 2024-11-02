@@ -10,7 +10,7 @@ import javax.swing.DefaultListModel;
 import javax.swing.JFrame;
 import javax.swing.table.DefaultTableModel;
 import spdvi.adminusers.dataaccess.DataAccess;
-import spdvi.adminusers.dto.Intents;
+import spdvi.adminusers.dto.Intent;
 import spdvi.adminusers.dto.Usuari;
 import uk.co.caprica.vlcj.player.component.EmbeddedMediaPlayerComponent;
 // NO USAR ---------------------------------------------------------------------------------------------------------------------------------------------------
@@ -154,8 +154,8 @@ public class GestionGeneral extends javax.swing.JFrame {
         int id = Integer.parseInt(partCell[1]);
 
         da = new DataAccess();
-        ArrayList<Intents> intents = da.getIntents();
-        for (Intents i : intents) {
+        ArrayList<Intent> intents = da.getIntents();
+        for (Intent i : intents) {
             if (i.getId() == id) {
                 mediaPlayer.mediaPlayer().media().play(("ProyectoInterficies\\mavenproject1\\Resource\\" + i.getVideofile()));
                 System.out.print(i.getVideofile());
@@ -182,11 +182,11 @@ public class GestionGeneral extends javax.swing.JFrame {
 
     public void iniciaTablaIntents() {
         da = new DataAccess();
-        ArrayList<Intents> intents = da.getIntents();
+        ArrayList<Intent> intents = da.getIntents();
 
         DefaultListModel model = new DefaultListModel();
 
-        for (Intents i : intents) {
+        for (Intent i : intents) {
             String intent = "num: " + i.getId();
             model.addElement(intent);
         }

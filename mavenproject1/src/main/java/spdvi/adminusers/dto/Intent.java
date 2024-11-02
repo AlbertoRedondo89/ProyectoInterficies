@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 
 
 
-public class Intents {
+public class Intent {
     private int id;
     private int idUsuari;
     private int idExercici;
@@ -16,10 +16,10 @@ public class Intents {
     private LocalDateTime fi;
     private String videofile;
 
-    public Intents() {
+    public Intent() {
     }
 
-    public Intents(int id, int idUsuari, int idExercici, LocalDateTime inici, LocalDateTime fi, String videofile) {
+    public Intent(int id, int idUsuari, int idExercici, LocalDateTime inici, LocalDateTime fi, String videofile) {
         this.id = id;
         this.idUsuari = idUsuari;
         this.idExercici = idExercici;
