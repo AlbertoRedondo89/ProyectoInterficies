@@ -11,6 +11,8 @@ import javax.swing.table.DefaultTableModel;
 import spdvi.adminusers.dataaccess.DataAccess;
 import spdvi.adminusers.dto.Intents;
 import spdvi.adminusers.dto.Usuari;
+import spdvi.adminusers.logica.Logica;
+import spdvi.adminusers.models.TablaIntentosGeneral;
 import uk.co.caprica.vlcj.player.component.EmbeddedMediaPlayerComponent;
 
 /**
@@ -21,6 +23,7 @@ public class Gestion extends javax.swing.JPanel {
 
     private MainForm pare;
     private DataAccess da = new DataAccess();
+    private Logica logica = new Logica();
     private EmbeddedMediaPlayerComponent mediaPlayer;
     public Gestion() {
         initComponents();
@@ -28,6 +31,8 @@ public class Gestion extends javax.swing.JPanel {
     
     public Gestion(MainForm pare) {
         this.pare = pare;
+        System.setProperty("jna.library.path", "C:\\Program Files\\VideoLAN\\VLC");
+        System.setProperty("VLC_PLUGIN_PATH", "C:\\Program Files\\VideoLAN\\VLC\\plugins");
         initComponents();
         mediaPlayer = new EmbeddedMediaPlayerComponent();
         jPanelVideo.add(mediaPlayer, BorderLayout.CENTER);
@@ -54,17 +59,11 @@ public class Gestion extends javax.swing.JPanel {
     }
 
     public void iniciaTablaIntents() {
-        da = new DataAccess();
-        ArrayList<Intents> intents = da.getIntents();
+        ArrayList<Intents> intents = logica.getIntents();
+        TablaIntentosGeneral intentos = new TablaIntentosGeneral(intents);
 
-        DefaultListModel model = new DefaultListModel();
-
-        for (Intents i : intents) {
-            String intent = "num: " + i.getId();
-            model.addElement(intent);
-        }
-        jListIntents.removeAll();
-        jListIntents.setModel(model);
+        jTableIntents.removeAll();
+        jTableIntents.setModel(intentos);
 
     }
     
@@ -88,24 +87,37 @@ public class Gestion extends javax.swing.JPanel {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        jLabelReviewTitle = new javax.swing.JLabel();
+        jLabelComentario = new javax.swing.JLabel();
         jScrollPane3 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
-        jScrollPane4 = new javax.swing.JScrollPane();
-        jListIntents = new javax.swing.JList<>();
-        jPanelVideo = new javax.swing.JPanel();
+        jTextComentario = new javax.swing.JTextArea();
+        jComboBoxValoracion = new javax.swing.JComboBox<>();
+        jLabel3 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTableUsers = new javax.swing.JTable();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTableIntents = new javax.swing.JTable();
+        jPanel2 = new javax.swing.JPanel();
+        jPanelVideo = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        jLabelNombreEjercicio = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabelFechaEjercicio = new javax.swing.JLabel();
+        jButtonMuestraTodos = new javax.swing.JButton();
+        jButtonMuestraPendientes = new javax.swing.JButton();
 
         setPreferredSize(new java.awt.Dimension(1200, 800));
 
-        jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Review Info"));
 
-        jLabelReviewTitle.setText("Review Info");
+        jLabelComentario.setText("Comentario");
 
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jScrollPane3.setViewportView(jTextArea1);
+        jTextComentario.setColumns(20);
+        jTextComentario.setRows(5);
+        jScrollPane3.setViewportView(jTextComentario);
+
+        jComboBoxValoracion.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "1", "2", "3", "4", "5" }));
+
+        jLabel3.setText("Valoración");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -114,28 +126,28 @@ public class Gestion extends javax.swing.JPanel {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabelReviewTitle)
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 695, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(52, Short.MAX_VALUE))
+                    .addComponent(jLabel3)
+                    .addComponent(jComboBoxValoracion, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(133, 133, 133)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabelComentario)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 963, Short.MAX_VALUE))
+                .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabelReviewTitle)
-                .addGap(55, 55, 55)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(jLabelComentario))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jComboBoxValoracion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)))
         );
-
-        jListIntents.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
-            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
-                jListIntentsValueChanged(evt);
-            }
-        });
-        jScrollPane4.setViewportView(jListIntents);
-
-        jPanelVideo.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        jPanelVideo.setLayout(new java.awt.BorderLayout());
 
         jTableUsers.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -150,6 +162,73 @@ public class Gestion extends javax.swing.JPanel {
         ));
         jScrollPane2.setViewportView(jTableUsers);
 
+        jTableIntents.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        jTableIntents.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {},
+                {},
+                {},
+                {}
+            },
+            new String [] {
+
+            }
+        ));
+        jTableIntents.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTableIntentsMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(jTableIntents);
+
+        jPanelVideo.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        jPanelVideo.setLayout(new java.awt.BorderLayout());
+
+        jLabel1.setText("Ejercicio:");
+
+        jLabelNombreEjercicio.setText("ejercicio");
+
+        jLabel2.setText("Fecha: ");
+
+        jLabelFechaEjercicio.setText("Fecha");
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(25, 25, 25)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabelNombreEjercicio, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(174, 174, 174)
+                .addComponent(jLabel2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabelFechaEjercicio, javax.swing.GroupLayout.PREFERRED_SIZE, 306, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(99, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanelVideo, javax.swing.GroupLayout.DEFAULT_SIZE, 845, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(44, 44, 44)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabelNombreEjercicio, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel2)
+                        .addComponent(jLabelFechaEjercicio, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel1)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jPanelVideo, javax.swing.GroupLayout.PREFERRED_SIZE, 491, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
+
+        jButtonMuestraTodos.setText("Todos");
+
+        jButtonMuestraPendientes.setText("Pendientes");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -157,57 +236,75 @@ public class Gestion extends javax.swing.JPanel {
             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jButtonMuestraTodos, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButtonMuestraPendientes)))
+                .addGap(10, 10, 10)
+                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanelVideo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(52, 52, 52)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanelVideo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap(19, Short.MAX_VALUE)
-                        .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 317, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 16, Short.MAX_VALUE)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 495, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jButtonMuestraTodos)
+                            .addComponent(jButtonMuestraPendientes))
+                        .addGap(16, 16, 16))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jScrollPane2)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jListIntentsValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_jListIntentsValueChanged
-        if (evt.getValueIsAdjusting()) {
-            return;
-        }
+    private void jTableIntentsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTableIntentsMouseClicked
+        // TODO add your handling code here:
 
-        String cell = jListIntents.getSelectedValue();
-        String[] partCell = cell.split(": ");
-        int id = Integer.parseInt(partCell[1]);
+        int row = jTableIntents.getSelectedRow();
+        int id = (int) jTableIntents.getValueAt(row, 0);
         String archivo = "src\\main\\resources\\videos\\";
-        da = new DataAccess();
-        ArrayList<Intents> intents = da.getIntents();
+
+        ArrayList<Intents> intents = logica.getIntents();
         for (Intents i : intents) {
             if (i.getId() == id) {
                 archivo += i.getVideofile();
                 mediaPlayer.mediaPlayer().media().play(archivo);
-                    System.out.print(new String(i.getVideofile()));
-                }
+                System.out.print(i.getVideofile());
             }
-    }//GEN-LAST:event_jListIntentsValueChanged
+        }
+    }//GEN-LAST:event_jTableIntentsMouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel jLabelReviewTitle;
-    private javax.swing.JList<String> jListIntents;
+    private javax.swing.JButton jButtonMuestraPendientes;
+    private javax.swing.JButton jButtonMuestraTodos;
+    private javax.swing.JComboBox<String> jComboBoxValoracion;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabelComentario;
+    private javax.swing.JLabel jLabelFechaEjercicio;
+    private javax.swing.JLabel jLabelNombreEjercicio;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanelVideo;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JTable jTableIntents;
     private javax.swing.JTable jTableUsers;
-    private javax.swing.JTextArea jTextArea1;
+    private javax.swing.JTextArea jTextComentario;
     // End of variables declaration//GEN-END:variables
 }

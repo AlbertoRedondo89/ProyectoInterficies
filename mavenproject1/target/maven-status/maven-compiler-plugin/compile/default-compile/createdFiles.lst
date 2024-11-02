@@ -14,3 +14,4 @@ spdvi\adminusers\MainForm$1.class
 spdvi\adminusers\dataaccess\DataAccess.class
 spdvi\adminusers\GestionGeneral$2.class
 spdvi\adminusers\dto\Review.class
+spdvi\adminusers\models\TablaIntentosGeneral.class

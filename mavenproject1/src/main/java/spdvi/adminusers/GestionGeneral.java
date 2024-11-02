@@ -157,8 +157,8 @@ public class GestionGeneral extends javax.swing.JFrame {
         ArrayList<Intents> intents = da.getIntents();
         for (Intents i : intents) {
             if (i.getId() == id) {
-                mediaPlayer.mediaPlayer().media().play(new String("ProyectoInterficies\\mavenproject1\\Resource\\" + i.getVideofile()));
-                System.out.print(new String(i.getVideofile()));
+                mediaPlayer.mediaPlayer().media().play(("ProyectoInterficies\\mavenproject1\\Resource\\" + i.getVideofile()));
+                System.out.print(i.getVideofile());
             }
         }
     }//GEN-LAST:event_jListIntentsValueChanged
