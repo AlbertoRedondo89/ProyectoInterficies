@@ -21,7 +21,7 @@ public class Logica {
 
     public Logica() {
         usuaris = da.getUsuaris();
-        exercici = da.getExercicis();
+        exercicis = da.getExercicis();
         intents = da.getIntents2();
         reviews = da.getReviews();
     }

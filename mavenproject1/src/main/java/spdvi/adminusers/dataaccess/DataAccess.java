@@ -12,6 +12,7 @@ import static java.time.LocalDateTime.now;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import spdvi.adminusers.dto.Exercici;
 import spdvi.adminusers.dto.Intents;
 import spdvi.adminusers.dto.Review;
 import spdvi.adminusers.dto.Usuari;
@@ -37,9 +38,10 @@ public class DataAccess {
         
         return connection;
     }
-    //____________________________
-    //MIRAR CRUD__________________
-    //____________________________
+    
+    //--------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    // ---------------------------------------------------------------------------------- USUARIS ---------------------------
+    //--------------------------------------------------------------------------------------------------------------------------------------------------------------------
     
     public ArrayList<Usuari> getUsuaris() {
         ArrayList<Usuari> usuaris = new ArrayList<>();
@@ -152,6 +154,9 @@ public class DataAccess {
         
         return intents;
     }
+    // --------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    // ---------------------------------------------------------------------------------- INTENTS --------------------------
+    //--------------------------------------------------------------------------------------------------------------------------------------------------------------------
     
     public ArrayList<Intents> getIntents2() {
         ArrayList<Intents> intents = new ArrayList<>();
@@ -187,6 +192,11 @@ public class DataAccess {
         return intents;
     }
     
+    //--------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    // ---------------------------------------------------------------------------------- REVIEWS -------------------------
+    //--------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    
+    
     public ArrayList<Review> getReviews(){
         ArrayList<Review> reviews = new ArrayList<>();
         String sql = "SELECT * from Review";
@@ -198,12 +208,17 @@ public class DataAccess {
                 Review rev = new Review();
                 rev.setId(set.getInt("Id"));
                 rev.setIdIntent(set.getInt("IdIntent"));
-                rev.setIdReviewer(0);
+                rev.setIdReviewer(set.getInt("IdReviewer"));
+                rev.setValoracio(set.getInt("Valoracio"));
+                rev.setComentari(set.getString("Comentari"));
+                
+                reviews.add(rev);
             }
+            selectStatement.close();
+            connection.close();
         } catch (SQLException ex) {
             Logger.getLogger(DataAccess.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
         return reviews;
     }
     
@@ -221,4 +236,30 @@ public class DataAccess {
         return autorizado;
     }
     
+    //--------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    //---------------------------------------------------------------------------------- EXERCICI ----------------------------------------------------------------------------------
+    //--------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    
+    public ArrayList<Exercici> getExercicis(){
+        ArrayList<Exercici> exercicis = new ArrayList<>();
+        String sql = "SELECT * from Exercicis";
+        Connection connection = getConnection();
+        
+        try (PreparedStatement selectStatement = connection.prepareStatement(sql);
+                ResultSet set = selectStatement.executeQuery()) {
+            while(set.next()) {
+                Exercici ex = new Exercici();
+                ex.setId(set.getInt("Id"));
+                ex.setNomExercici(set.getString("NomExercici"));
+                ex.setDescripcio(set.getString("Descripcio"));
+                
+                exercicis.add(ex);
+            }
+            selectStatement.close();
+            connection.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(DataAccess.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return exercicis;
+    }
 }
