@@ -4,14 +4,14 @@
  */
 package spdvi.adminusers;
 
-import at.favre.lib.crypto.bcrypt.BCrypt;
-import com.sun.tools.javac.Main;
 import java.awt.CardLayout;
-import java.awt.Frame;
+import java.awt.Cursor;
+import java.awt.Desktop;
 import java.awt.Image;
-import java.util.Arrays;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import javax.swing.ImageIcon;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import spdvi.adminusers.dataaccess.DataAccess;
 import spdvi.adminusers.dto.Usuari;
@@ -53,6 +53,7 @@ public class MainForm extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jButtonLogin = new javax.swing.JButton();
         jButtonRegistro = new javax.swing.JButton();
+        jLabelWeb = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenuFile = new javax.swing.JMenu();
         jMenuHelp = new javax.swing.JMenu();
@@ -78,20 +79,40 @@ public class MainForm extends javax.swing.JFrame {
             }
         });
 
+        jLabelWeb.setForeground(new java.awt.Color(0, 51, 255));
+        jLabelWeb.setText("Pulsa aquí para acceder a nuestra WEB");
+        jLabelWeb.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabelWebMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jLabelWebMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                jLabelWebMouseExited(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanelInicioLayout = new javax.swing.GroupLayout(jPanelInicio);
         jPanelInicio.setLayout(jPanelInicioLayout);
         jPanelInicioLayout.setHorizontalGroup(
             jPanelInicioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelInicioLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButtonRegistro)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButtonLogin)
-                .addGap(50, 50, 50))
             .addGroup(jPanelInicioLayout.createSequentialGroup()
                 .addContainerGap(150, Short.MAX_VALUE)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 509, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(150, Short.MAX_VALUE))
+                .addGroup(jPanelInicioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanelInicioLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jButtonRegistro)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButtonLogin)
+                        .addGap(50, 50, 50))
+                    .addGroup(jPanelInicioLayout.createSequentialGroup()
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 509, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(150, Short.MAX_VALUE))))
+            .addGroup(jPanelInicioLayout.createSequentialGroup()
+                .addGap(20, 20, 20)
+                .addComponent(jLabelWeb)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         jPanelInicioLayout.setVerticalGroup(
             jPanelInicioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -102,7 +123,9 @@ public class MainForm extends javax.swing.JFrame {
                 .addGroup(jPanelInicioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButtonLogin)
                     .addComponent(jButtonRegistro))
-                .addGap(50, 50, 50))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabelWeb)
+                .addGap(28, 28, 28))
         );
 
         jMenuFile.setText("File");
@@ -139,6 +162,22 @@ public class MainForm extends javax.swing.JFrame {
         reg.setSize(300, 200);
         reg.setVisible(true);
     }//GEN-LAST:event_jButtonRegistroActionPerformed
+
+    private void jLabelWebMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelWebMouseClicked
+        try {
+            URI uri = new URI("www.google.com");
+            Desktop.getDesktop().browse(uri);
+        } catch (IOException | URISyntaxException e) {
+            e.printStackTrace();
+        }
+    }//GEN-LAST:event_jLabelWebMouseClicked
+
+    private void jLabelWebMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelWebMouseEntered
+        setCursor(new Cursor(Cursor.HAND_CURSOR));    }//GEN-LAST:event_jLabelWebMouseEntered
+
+    private void jLabelWebMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelWebMouseExited
+        setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+    }//GEN-LAST:event_jLabelWebMouseExited
     
     public void abrirMenuPrincipal(String user, char[] password) {
         if(da.accesoUsuario(user, password)){
@@ -205,6 +244,7 @@ public class MainForm extends javax.swing.JFrame {
     private javax.swing.JButton jButtonLogin;
     private javax.swing.JButton jButtonRegistro;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabelWeb;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenu jMenuFile;
     private javax.swing.JMenu jMenuHelp;

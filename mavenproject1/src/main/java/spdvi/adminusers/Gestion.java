@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.RowSorter.SortKey;
 import javax.swing.SortOrder;
+import javax.swing.SwingUtilities;
 import javax.swing.table.TableRowSorter;
 import spdvi.adminusers.dataaccess.DataAccess;
 import spdvi.adminusers.dto.Intent;
@@ -45,8 +46,6 @@ public class Gestion extends javax.swing.JPanel {
         jPanelVideo.add(mediaPlayer, BorderLayout.CENTER);
         iniciaTablaUsers();
         iniciaTablaIntents();
-        jTableIntents.changeSelection(0, 0, false, false);
-        
     }
 
     
@@ -67,6 +66,12 @@ public class Gestion extends javax.swing.JPanel {
         sorterIntentos(tablaIntentos);
         jTextComentario.setForeground(Color.BLACK);
         jTextComentario.setBackground(Color.WHITE);
+        
+        // Reproducción automática del primer vídeo
+        if (!intents.isEmpty()) {
+            jTableIntents.changeSelection(0, 0, false, false);
+            playVid(intents.get(0)); // Llama a playVid solo después de que el panel sea visible
+        }
     }
     
     // ------------------------------------------------------------------------------------------------------------------------------------------- METODO PARA LOS COLORES DE LA TABLA
@@ -395,10 +400,12 @@ public class Gestion extends javax.swing.JPanel {
 
     private void playVid(Intent intento) {
             String archivo = "src\\main\\resources\\videos\\" + intento.getVideofile();
-            mediaPlayer.mediaPlayer().media().play(archivo);
-            
-            jLabelNombreEjercicio.setText(logica.getNombreEjercicio(intento.getIdExercici()));
-            jLabelFechaEjercicio.setText(intento.getInici().toString());
+            SwingUtilities.invokeLater(() -> {
+                mediaPlayer.mediaPlayer().media().play(archivo);
+
+                jLabelNombreEjercicio.setText(logica.getNombreEjercicio(intento.getIdExercici()));
+                jLabelFechaEjercicio.setText(intento.getInici().toString());
+            });
     }
     
     // ------------------------------------------------------------------------------------------------------------------------------------------BOTON VISUALIZAR TODAS LAS REVIEWS
@@ -411,6 +418,8 @@ public class Gestion extends javax.swing.JPanel {
         jTableIntents.setModel(tablaIntentos);
         pintaTabla();
         sorterIntentos(tablaIntentos);
+        jTableIntents.changeSelection(0, 0, false, false);
+        playVid(intents.get(0));
     }//GEN-LAST:event_jButtonMuestraTodosActionPerformed
     
     // ------------------------------------------------------------------------------------------------------------------------------------------BOTON VISUALIZAR REVIEWS PENDIENTES
@@ -423,6 +432,8 @@ public class Gestion extends javax.swing.JPanel {
         jTableIntents.setModel(tablaIntentos);
         pintaTabla();
         sorterIntentos(tablaIntentos);
+        jTableIntents.changeSelection(0, 0, false, false);
+        playVid(intents.get(0));
 
     }//GEN-LAST:event_jButtonMuestraPendientesActionPerformed
 
@@ -450,6 +461,8 @@ public class Gestion extends javax.swing.JPanel {
             jTableIntents.setModel(tablaIntentosUsuario);
             pintaTabla();
             sorterIntentos(tablaIntentosUsuario);
+            jTableIntents.changeSelection(0, 0, false, false);
+            playVid(intents.get(0));
         }
     }//GEN-LAST:event_jTableUsersMouseClicked
 

@@ -18,14 +18,15 @@ public class ColoresTabla extends DefaultTableCellRenderer {
 
         // Obtiene el valor de la columna "Estado" en la fila actual (suponiendo que es la columna 3)
         Object estadoValue = table.getValueAt(row, 3);
+        Color am, roj, ver;
 
         // Cambia el color de fondo según el valor de "Estado"
         if ("Pendiente".equals(estadoValue)) {
-            cell.setBackground(Color.YELLOW);
+            cell.setBackground(am = new Color(225, 220, 103));
         } else if ("Aprobado".equals(estadoValue)) {
-            cell.setBackground(Color.GREEN);
+            cell.setBackground(ver = new Color(126, 234, 156));
         } else if ("Suspenso".equals(estadoValue)) {
-            cell.setBackground(Color.RED);
+            cell.setBackground(roj = new Color(234, 116, 164));
         } else {
             cell.setBackground(Color.WHITE); // Fondo blanco por defecto
         }
