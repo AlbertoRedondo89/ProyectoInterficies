@@ -18,11 +18,14 @@ spdvi\adminusers\logica\Logica.class
 spdvi\adminusers\GestionGeneral$1.class
 spdvi\adminusers\Gestion$2.class
 spdvi\adminusers\models\ColoresTabla.class
+spdvi\adminusers\Gestion$10.class
+spdvi\adminusers\Gestion$9.class
 spdvi\adminusers\Register.class
 spdvi\adminusers\MainForm$1.class
 spdvi\adminusers\Gestion$6.class
 spdvi\adminusers\dataaccess\DataAccess.class
 spdvi\adminusers\GestionGeneral$2.class
 spdvi\adminusers\dto\Review.class
+spdvi\adminusers\Gestion$8.class
 spdvi\adminusers\models\TablaIntentosGeneral.class
 spdvi\adminusers\Gestion$5.class

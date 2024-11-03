@@ -8,12 +8,8 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.DefaultListModel;
-import javax.swing.RowSorter;
 import javax.swing.RowSorter.SortKey;
 import javax.swing.SortOrder;
-import javax.swing.table.AbstractTableModel;
-import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 import spdvi.adminusers.dataaccess.DataAccess;
 import spdvi.adminusers.dto.Intent;
@@ -81,8 +77,6 @@ public class Gestion extends javax.swing.JPanel {
         }
     }
     
-    
-    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -106,6 +100,9 @@ public class Gestion extends javax.swing.JPanel {
         jLabelNombreEjercicio = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabelFechaEjercicio = new javax.swing.JLabel();
+        jButtonPlay = new javax.swing.JButton();
+        jButtonStrop = new javax.swing.JButton();
+        jButtonPause = new javax.swing.JButton();
         jButtonMuestraTodos = new javax.swing.JButton();
         jButtonMuestraPendientes = new javax.swing.JButton();
 
@@ -245,6 +242,27 @@ public class Gestion extends javax.swing.JPanel {
 
         jLabelFechaEjercicio.setText("............................");
 
+        jButtonPlay.setText("Play");
+        jButtonPlay.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonPlayActionPerformed(evt);
+            }
+        });
+
+        jButtonStrop.setText("Stop");
+        jButtonStrop.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonStropActionPerformed(evt);
+            }
+        });
+
+        jButtonPause.setText("Pause");
+        jButtonPause.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonPauseActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -252,18 +270,28 @@ public class Gestion extends javax.swing.JPanel {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(25, 25, 25)
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabelNombreEjercicio, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(185, 185, 185)
-                        .addComponent(jLabel2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabelFechaEjercicio, javax.swing.GroupLayout.PREFERRED_SIZE, 306, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(1, 1, 1)
-                        .addComponent(jPanelVideo, javax.swing.GroupLayout.PREFERRED_SIZE, 823, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(32, Short.MAX_VALUE))
+                        .addComponent(jPanelVideo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addGap(25, 25, 25)
+                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jLabelNombreEjercicio, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(185, 185, 185)
+                                .addComponent(jLabel2)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jLabelFechaEjercicio, javax.swing.GroupLayout.PREFERRED_SIZE, 306, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addGap(230, 230, 230)
+                                .addComponent(jButtonPlay)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jButtonPause)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jButtonStrop)))
+                        .addGap(0, 85, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -275,8 +303,13 @@ public class Gestion extends javax.swing.JPanel {
                     .addComponent(jLabel1)
                     .addComponent(jLabelNombreEjercicio, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanelVideo, javax.swing.GroupLayout.PREFERRED_SIZE, 447, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(12, Short.MAX_VALUE))
+                .addComponent(jPanelVideo, javax.swing.GroupLayout.PREFERRED_SIZE, 441, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButtonPlay)
+                    .addComponent(jButtonStrop)
+                    .addComponent(jButtonPause))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jButtonMuestraTodos.setText("Todos");
@@ -301,15 +334,13 @@ public class Gestion extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 238, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 238, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(jButtonMuestraTodos, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jButtonMuestraPendientes)
-                        .addGap(24, 24, 24)))
-                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButtonMuestraPendientes)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
@@ -317,22 +348,18 @@ public class Gestion extends javax.swing.JPanel {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
+                        .addGap(50, 50, 50)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(50, 50, 50)
                                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(jButtonMuestraPendientes)
-                                    .addComponent(jButtonMuestraTodos))
-                                .addGap(19, 19, 19)))
-                        .addGap(18, 18, 18))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(50, 50, 50)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 456, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                                    .addComponent(jButtonMuestraTodos)))
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 408, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(64, 64, 64))
         );
@@ -342,14 +369,9 @@ public class Gestion extends javax.swing.JPanel {
     private void jTableIntentsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTableIntentsMouseClicked
 
         int row = jTableIntents.getSelectedRow();
-        seleccionRow(row);
-    }//GEN-LAST:event_jTableIntentsMouseClicked
-    
-    private void seleccionRow(int n) {
-        
-        if (n != -1) {
-            // Convertir el índice de vista al índice del modelo
-            int modelIndex = jTableIntents.convertRowIndexToModel(n); 
+        if (row != -1) {
+            // Esto para que, al ordenar, no se desajuste el elemento seleccionado
+            int modelIndex = jTableIntents.convertRowIndexToModel(row);
 
             // Usar el índice del modelo para obtener el intento correcto
             TablaIntentosGeneral modelo = (TablaIntentosGeneral) jTableIntents.getModel();
@@ -357,21 +379,20 @@ public class Gestion extends javax.swing.JPanel {
 
             playVid(intento); // Aquí el video correcto estará vinculado al intento correcto
             Review rev = logica.getReview(intento.getId());
-            if (rev != null ) {
+            if (rev != null) {
                 jTextComentario.setText(rev.getComentari());
-                jComboBoxValoracion.setSelectedIndex(rev.getValoracio()-1); //menos 1 para evitar outOfBounds
+                jComboBoxValoracion.setSelectedIndex(rev.getValoracio() - 1); //menos 1 para evitar outOfBounds
                 jButtonEliminaReview.setEnabled(true);
                 jButtonModificaReview.setEnabled(true);
             } else {
                 jTextComentario.setText("");
                 jComboBoxValoracion.setSelectedIndex(0);
-                 jButtonEliminaReview.setEnabled(false);
+                jButtonEliminaReview.setEnabled(false);
                 jButtonModificaReview.setEnabled(false);
             }
-          } 
-        
-    }
-    
+        }
+    }//GEN-LAST:event_jTableIntentsMouseClicked
+
     private void playVid(Intent intento) {
             String archivo = "src\\main\\resources\\videos\\" + intento.getVideofile();
             mediaPlayer.mediaPlayer().media().play(archivo);
@@ -466,6 +487,18 @@ public class Gestion extends javax.swing.JPanel {
      activaBoton();
     }//GEN-LAST:event_jComboBoxValoracionItemStateChanged
 
+    private void jButtonPlayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPlayActionPerformed
+        mediaPlayer.mediaPlayer().controls().play();
+    }//GEN-LAST:event_jButtonPlayActionPerformed
+
+    private void jButtonStropActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonStropActionPerformed
+       mediaPlayer.mediaPlayer().controls().stop();
+    }//GEN-LAST:event_jButtonStropActionPerformed
+
+    private void jButtonPauseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPauseActionPerformed
+        mediaPlayer.mediaPlayer().controls().pause();
+    }//GEN-LAST:event_jButtonPauseActionPerformed
+
     private void activaBoton() {
         if(!jTextComentario.getText().isEmpty() && jComboBoxValoracion.getSelectedIndex() != -1) jButtonGuardarReview.setEnabled(true);
         else jButtonGuardarReview.setEnabled(false);
@@ -478,6 +511,9 @@ public class Gestion extends javax.swing.JPanel {
     private javax.swing.JButton jButtonModificaReview;
     private javax.swing.JButton jButtonMuestraPendientes;
     private javax.swing.JButton jButtonMuestraTodos;
+    private javax.swing.JButton jButtonPause;
+    private javax.swing.JButton jButtonPlay;
+    private javax.swing.JButton jButtonStrop;
     private javax.swing.JComboBox<String> jComboBoxValoracion;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
