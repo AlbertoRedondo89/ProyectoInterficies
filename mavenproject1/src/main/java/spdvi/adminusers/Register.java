@@ -16,12 +16,12 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 
-public class Login extends JDialog{
+public class Register extends JDialog{
     private JTextField userIdField;
     private JPasswordField passwordField;
     private JButton loginButton;
 
-    public Login(JFrame parent) {
+    public Register(JFrame parent) {
         super(parent, "Login", true); // 'true' para que sea modal
 
         // Configuración del layout
@@ -32,16 +32,20 @@ public class Login extends JDialog{
         userIdField = new JTextField();
         JLabel passwordLabel = new JLabel("Password: ");
         passwordField = new JPasswordField();
+
         
         // Botón de login
-        loginButton = new JButton("Login");
-        
+        loginButton = new JButton("Registro");
         loginButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String userId = userIdField.getText();
-                char[] password =  passwordField.getPassword();
-                ((MainForm)parent).abrirMenuPrincipal(userId, password);
+                char[] passwordChar = passwordField.getPassword();
+                String password = BCrypt.withDefaults().hashToString(12, passwordChar);
+                System.out.print(userId);
+                System.out.print(password);
+                
+                ((MainForm)parent).registro(userId, password);
                 dispose();
             }
         });

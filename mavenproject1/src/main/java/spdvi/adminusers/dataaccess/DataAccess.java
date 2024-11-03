@@ -16,11 +16,12 @@ import spdvi.adminusers.dto.Exercici;
 import spdvi.adminusers.dto.Intent;
 import spdvi.adminusers.dto.Review;
 import spdvi.adminusers.dto.Usuari;
-
+import at.favre.lib.crypto.bcrypt.BCrypt;
+import java.util.Arrays;
 
 
 public class DataAccess {
-    
+    private static int activo;
     
     private Connection getConnection(){
         Connection connection = null;
@@ -70,53 +71,6 @@ public class DataAccess {
         }
         
         return usuaris;
-    }
-    
-    public int registerUser(Usuari user) {
-        
-        int newUserId = 0;
-        Connection connection = getConnection();
-        
-        String sql = "INSERT into Usuaris(Nom, Email, PasswordHash, IsInstructor) "
-                + " VALUES (?,?,?,?);"
-                + " SELECT CAST(SCOPE_IDENTITY() AS INT)";
-        
-        try {
-            PreparedStatement insertStatement = connection.prepareStatement(sql);
-            insertStatement.setString(1, user.getNom());
-            insertStatement.setString(2, user.getEmail());
-            insertStatement.setString(3, user.getPasswordHash());
-            insertStatement.setBoolean(4, user.isIsInstructor());
-            newUserId = insertStatement.executeUpdate();
-            
-            insertStatement.close();
-            connection.close();
-        } catch (SQLException ex) {
-            Logger.getLogger(DataAccess.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-        return newUserId;
-    }
-    
-    public int getLastInsertId() {
-        String sql = "SELECT MAX(Id) from Usuaris";
-        int userId = 0;
-        
-        Connection connection = getConnection();
-        try {
-        PreparedStatement selectStatement = connection.prepareStatement(sql);
-        ResultSet resultSet = selectStatement.executeQuery();
-            while (resultSet.next()) {
-                userId = resultSet.getInt(1);
-            }
-            selectStatement.close();
-            connection.close();
-        }
-        catch (SQLException ex){
-            System.out.println("mal");
-        }
-        
-        return userId;
     }
     
     public ArrayList<Intent> getIntents() {
@@ -222,18 +176,79 @@ public class DataAccess {
         return reviews;
     }
     
-    public boolean accesoUsuario(int id, String pssw) {
-        boolean autorizado = false;
-        ArrayList<Usuari> usuaris = getUsuaris();
-        for (Usuari user : usuaris) {
-            if (user.getId() == id) {
-                if(user.getPasswordHash().equals(pssw)){
-                    if(user.isIsInstructor()) autorizado = true;
-                }
+        // ----------------------------------------------------------------------------------------------------------------ACCESO DE USUARIO
+   public boolean accesoUsuario(String nom, char[] pssw) {
+    System.out.println("Buscando usuario: " + nom);
+
+    boolean autorizado = false;
+    ArrayList<Usuari> usuaris = getUsuaris();
+    
+    for (Usuari user : usuaris) {
+        if (user.getNom().equals(nom)) {
+            System.out.println("Usuario encontrdo...");
+            
+            BCrypt.Result result = BCrypt.verifyer().verify(pssw, user.getPasswordHash());
+            
+            if(result.verified) {
+                System.out.println("Contraseña verificada para el usuario: " + nom);
+                activo = user.getId();
+                System.out.println("Conexión estblecida con usuario n: " + activo);
+                autorizado = true;
+                if(user.isIsInstructor()) autorizado = true;
+            } else {
+                System.out.println("Contraseña incorrecta para el usuario: " + nom);
             }
         }
+    }
+
+    return autorizado;
+}
+    
+    // ----------------------------------------------------------------------------------------------------------------GESTION DE  REVIEW
+    // ----------------------------------------------------------------------------------------------------------------INSERTAR NUEVA  REVIEW
+
+   public int registraReview(Review rev) {
+        int revsOk = 0;
         
-        return autorizado;
+        Connection connection = getConnection();
+        String sql = "INSERT INTO Review(IdIntent, IdReviewer, Valoracio,  Comentari)"
+                        + "VALUES(?,?,?,?);";
+         try {
+            PreparedStatement insertStatement = connection.prepareStatement(sql);
+            insertStatement.setInt(1, rev.getIdIntent());
+            insertStatement.setInt(2, activo);
+            insertStatement.setInt(3, rev.getValoracio());
+            insertStatement.setString(4, rev.getComentari());
+            revsOk = insertStatement.executeUpdate();
+            
+            insertStatement.close();
+            connection.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(DataAccess.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return revsOk;
+    }
+   
+     // ----------------------------------------------------------------------------------------------------------------ACTUALIZAR UNA  REVIEW
+    public int updateReview(int valoracion, String comentario,  int intento) {
+        int total = 0;
+        System.out.println(valoracion + ", " + comentario + ", " + activo + ", " + intento);
+            Connection connection = getConnection();
+            String sql = "UPDATE Review "
+                            + "SET IdReviewer = ?, Valoracio = ?, Comentari = ? "
+                            + "WHERE IdIntent = ?";
+          try {
+              PreparedStatement pst = connection.prepareStatement(sql);
+              pst.setInt(1, activo);
+              pst.setInt(2, valoracion);
+              pst.setString(3, comentario);
+              pst.setInt(4, intento);
+              total = pst.executeUpdate();
+              System.out.println("Elementos afectados: " + total);
+          } catch (SQLException ex) {
+                System.out.println(ex.getMessage());
+           };
+        return total;
     }
     
     //--------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -262,4 +277,94 @@ public class DataAccess {
         }
         return exercicis;
     }
+    
+ 
+    // EXTRAS
+    
+     public int registerUser(Usuari user) {
+        
+        int newUserId = 0;
+        Connection connection = getConnection();
+        
+        String sql = "INSERT into Usuaris(Nom, Email, PasswordHash, IsInstructor) "
+                + " VALUES (?,?,?,?);"
+                + " SELECT CAST(SCOPE_IDENTITY() AS INT)";
+        
+        try {
+            PreparedStatement insertStatement = connection.prepareStatement(sql);
+            insertStatement.setString(1, user.getNom());
+            insertStatement.setString(2, user.getEmail());
+            insertStatement.setString(3, user.getPasswordHash());
+            insertStatement.setBoolean(4, user.isIsInstructor());
+            newUserId = insertStatement.executeUpdate();
+            
+            insertStatement.close();
+            connection.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(DataAccess.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return newUserId;
+    }
+    
+    public int getLastInsertId() {
+        String sql = "SELECT MAX(Id) from Usuaris";
+        int userId = 0;
+        
+        Connection connection = getConnection();
+        try {
+        PreparedStatement selectStatement = connection.prepareStatement(sql);
+        ResultSet resultSet = selectStatement.executeQuery();
+            while (resultSet.next()) {
+                userId = resultSet.getInt(1);
+            }
+            selectStatement.close();
+            connection.close();
+        }
+        catch (SQLException ex){
+            System.out.println("mal");
+        }
+        
+        return userId;
+    }
 }
+
+/*
+ private void jButtonLoginActionPerformed(java.awt.event.ActionEvent evt) {                                             
+        Usuari usuari = da.getUsuari(jTextFieldLoginEmail.getText());
+        
+        if (usuari != null) {
+            //Check password
+            char[] passwordToVerify = jPasswordLogin.getPassword();
+            String userPasswordHash = usuari.getPasswordHash();
+            var result = BCrypt.verifyer().verify(passwordToVerify, userPasswordHash);
+            if (result.verified) {
+                lblInfoMessage.setText("Bienvenido" + usuari.getNom());
+                if (usuari.isIsInstructor()) {jButtonDelete.setEnabled(true);
+                    
+                }
+            } else {
+                lblInfoMessage.setText("Contraseña equivocada");
+            }
+        }else {
+                lblInfoMessage.setText("El usuario no existe");
+            }
+        
+    }   
+
+
+
+    private void btnRegisterActionPerformed(java.awt.event.ActionEvent evt) {                                            
+        Usuari user = new Usuari();
+        user.setNom(txtNom.getText());
+        user.setEmail(txtEmail.getText());
+        String psswordHash = Bcrypt.withDefaults().hashToString(12, txtPassword.getPassword());
+        user.setPasswordHash(psswordHash);
+        user.setIsInstructor(chkInstructor.isSelected());
+        
+        //DataAccess da = new DataAccess();
+        int nouId = da.registerUser(user);
+        user.setId(nouId);
+        lbMessage.setText("User registered mu bien con ID: " + nouId);
+    }    
+*/

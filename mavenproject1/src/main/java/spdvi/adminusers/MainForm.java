@@ -4,19 +4,23 @@
  */
 package spdvi.adminusers;
 
+import at.favre.lib.crypto.bcrypt.BCrypt;
 import com.sun.tools.javac.Main;
 import java.awt.CardLayout;
 import java.awt.Frame;
 import java.awt.Image;
+import java.util.Arrays;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import spdvi.adminusers.dataaccess.DataAccess;
+import spdvi.adminusers.dto.Usuari;
 
 public class MainForm extends javax.swing.JFrame {
     
     private DataAccess da = new DataAccess();
     private Gestion gestion;
+    private int idUsuario;
     
     public MainForm() {
         initComponents();
@@ -48,6 +52,7 @@ public class MainForm extends javax.swing.JFrame {
         jPanelInicio = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jButtonLogin = new javax.swing.JButton();
+        jButtonRegistro = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenuFile = new javax.swing.JMenu();
         jMenuHelp = new javax.swing.JMenu();
@@ -66,12 +71,21 @@ public class MainForm extends javax.swing.JFrame {
             }
         });
 
+        jButtonRegistro.setText("Registro");
+        jButtonRegistro.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonRegistroActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanelInicioLayout = new javax.swing.GroupLayout(jPanelInicio);
         jPanelInicio.setLayout(jPanelInicioLayout);
         jPanelInicioLayout.setHorizontalGroup(
             jPanelInicioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelInicioLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButtonRegistro)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButtonLogin)
                 .addGap(50, 50, 50))
             .addGroup(jPanelInicioLayout.createSequentialGroup()
@@ -85,7 +99,9 @@ public class MainForm extends javax.swing.JFrame {
                 .addContainerGap(150, Short.MAX_VALUE)
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 292, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 150, Short.MAX_VALUE)
-                .addComponent(jButtonLogin)
+                .addGroup(jPanelInicioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButtonLogin)
+                    .addComponent(jButtonRegistro))
                 .addGap(50, 50, 50))
         );
 
@@ -117,15 +133,37 @@ public class MainForm extends javax.swing.JFrame {
         login.setSize(300, 200);
         login.setVisible(true);
     }//GEN-LAST:event_jButtonLoginActionPerformed
+
+    private void jButtonRegistroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonRegistroActionPerformed
+        Register reg = new Register(this);
+        reg.setSize(300, 200);
+        reg.setVisible(true);
+    }//GEN-LAST:event_jButtonRegistroActionPerformed
     
-    public void abrirMenuPrincipal(String user, String password) {
- //       int id = Integer.parseInt(user);
-     //   if(da.accesoUsuario(id, password)){
+    public void abrirMenuPrincipal(String user, char[] password) {
+        if(da.accesoUsuario(user, password)){
             CardLayout c1 = (CardLayout)getContentPane().getLayout();
             c1.show(getContentPane(), "gestion");
-     //   }else {
-     //        JOptionPane.showMessageDialog(null, "Usuario incorrecto, pichón");
-       // }
+       }else {
+            JOptionPane.showMessageDialog(null, "Usuario incorrecto, pichón");
+       }
+    }
+    
+    public void registro(String user, String password) {
+        Usuari us = new Usuari();
+        us.setNom(user);
+        us.setPasswordHash(password);
+        us.setEmail(user + "@gmail");
+        us.setFoto(null);
+        us.setIsInstructor(true);
+        
+        int resultado = da.registerUser(us);
+        
+        System.out.println(resultado);
+    }
+    
+    public int getUser() {
+        return idUsuario;
     }
 
     /**
@@ -165,6 +203,7 @@ public class MainForm extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonLogin;
+    private javax.swing.JButton jButtonRegistro;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenu jMenuFile;

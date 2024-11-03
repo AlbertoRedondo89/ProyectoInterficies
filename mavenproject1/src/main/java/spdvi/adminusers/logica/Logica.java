@@ -20,10 +20,7 @@ public class Logica {
     private ArrayList<Review> reviews = new ArrayList<>();
 
     public Logica() {
-        usuaris = da.getUsuaris();
-        exercicis = da.getExercicis();
-        intents = da.getIntents2();
-        reviews = da.getReviews();
+       actualizaDatos();
     }
 
     public ArrayList<Usuari> getUsuaris() {
@@ -46,7 +43,15 @@ public class Logica {
         return intents;
     }
 
-    public void setIntents(ArrayList<Intent> intents) {
+    public void setIntents(ArrayList<Intent> intents, ArrayList<Review> reviews) {
+        for(Review rev : reviews) {
+            for (Intent intento : intents) {
+                if (intento.getId() == rev.getIdIntent()) {
+                    if (rev.getValoracio() > 2) intento.setEstado(Intent.ESTADOS[1]);
+                    else intento.setEstado(Intent.ESTADOS[2]);
+                }
+            }
+        }
         this.intents = intents;
     }
 
@@ -56,6 +61,13 @@ public class Logica {
 
     public void setReviews(ArrayList<Review> reviews) {
         this.reviews = reviews;
+    }
+    
+    public void  actualizaDatos() {
+        setUsuaris(da.getUsuaris());
+        setExercicis(da.getExercicis());
+        setReviews(da.getReviews());
+        setIntents(da.getIntents2(), reviews);
     }
     
     //METODO PARA GENERAR LOS INTENTOS SIN REVIEW PARA EL MENU INICIAL
@@ -99,5 +111,25 @@ public class Logica {
         }
         return rev;
     }
-
+    
+    public int registraReview(Review rev) {
+        int ok = 0;
+        ok = da.registraReview(rev);
+        return ok;              
+    }
+    
+    // -------------------------------------------------------------- CHECK PARA SABER SI CREAR O MODIFICAR LA REVIEW
+     public boolean intentoTieneReview(int intentoId) {
+        boolean crear = false;
+        for(Review rev : reviews) {
+            if (rev.getIdIntent() == intentoId) crear = true;  // Si la review existe, no se creara
+        }
+        return crear;
+    }
+     
+     public int updateReview(int valoracion, String comentario,  int intento) {
+         int total = 0;
+         total = da.updateReview(valoracion, comentario, intento);
+         return total;
+     }
 }

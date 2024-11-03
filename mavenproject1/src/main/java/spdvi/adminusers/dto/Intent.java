@@ -15,8 +15,11 @@ public class Intent {
     private LocalDateTime inici;
     private LocalDateTime fi;
     private String videofile;
+    private String estado;
+    public static final String[] ESTADOS = {"Pendiente", "Aprobado", "Suspenso"};
 
     public Intent() {
+        setEstado(ESTADOS[0]);
     }
 
     public Intent(int id, int idUsuari, int idExercici, LocalDateTime inici, LocalDateTime fi, String videofile) {
@@ -26,6 +29,7 @@ public class Intent {
         this.inici = inici;
         this.fi = fi;
         this.videofile = videofile;
+        setEstado(ESTADOS[0]);
     }
 
     public int getId() {
@@ -74,6 +78,14 @@ public class Intent {
 
     public void setVideofile(String videofile) {
         this.videofile = videofile;
+    }
+    
+    public void setEstado(String estado) {
+        this.estado = estado;
+    }
+    
+    public String getEstado() {
+        return estado;
     }
 
     @Override
