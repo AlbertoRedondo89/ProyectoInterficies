@@ -20,7 +20,7 @@ public class Logica {
     private ArrayList<Review> reviews = new ArrayList<>();
 
     public Logica() {
-       actualizaDatos();
+        actualizaDatos();
     }
 
     public ArrayList<Usuari> getUsuaris() {
@@ -44,11 +44,14 @@ public class Logica {
     }
 
     public void setIntents(ArrayList<Intent> intents, ArrayList<Review> reviews) {
-        for(Review rev : reviews) {
+        for (Review rev : reviews) {
             for (Intent intento : intents) {
                 if (intento.getId() == rev.getIdIntent()) {
-                    if (rev.getValoracio() > 2) intento.setEstado(Intent.ESTADOS[1]);
-                    else intento.setEstado(Intent.ESTADOS[2]);
+                    if (rev.getValoracio() > 2) {
+                        intento.setEstado(Intent.ESTADOS[1]);
+                    } else {
+                        intento.setEstado(Intent.ESTADOS[2]);
+                    }
                 }
             }
         }
@@ -62,22 +65,24 @@ public class Logica {
     public void setReviews(ArrayList<Review> reviews) {
         this.reviews = reviews;
     }
-    
-    public void  actualizaDatos() {
+
+    public void actualizaDatos() {
         setUsuaris(da.getUsuaris());
         setExercicis(da.getExercicis());
         setReviews(da.getReviews());
         setIntents(da.getIntents2(), reviews);
     }
-    
+
     //METODO PARA GENERAR LOS INTENTOS SIN REVIEW PARA EL MENU INICIAL
     public ArrayList<Intent> getIntentsSinReview() {
         ArrayList<Intent> intentosSinReview = new ArrayList<>();
         boolean check = true;
-        
-        for(Intent inten : intents) {
-            for(Review revi : reviews) {
-                if (inten.getId() == revi.getIdIntent())check = false;
+
+        for (Intent inten : intents) {
+            for (Review revi : reviews) {
+                if (inten.getId() == revi.getIdIntent()) {
+                    check = false;
+                }
             }
             if (check) {
                 intentosSinReview.add(inten);
@@ -86,50 +91,64 @@ public class Logica {
         }
         return intentosSinReview;
     }
-    
+
     //METODO PARA GENERAR LOS INTENTOS DE UN USUARIO CONCRETO
     public ArrayList<Intent> getIntentsDeUsuario(int id) {
         ArrayList<Intent> intentosUsuario = new ArrayList<>();
-        
-        for(Intent inten : intents) {
-                if (inten.getIdUsuari() == id )intentosUsuario.add(inten);
+
+        for (Intent inten : intents) {
+            if (inten.getIdUsuari() == id) {
+                intentosUsuario.add(inten);
+            }
         }
         return intentosUsuario;
-    } 
-    
+    }
+
     public String getNombreEjercicio(int intento) {
-        for(Exercici ex : exercicis) {
-            if (ex.getId() == intento) return ex.getNomExercici();
+        for (Exercici ex : exercicis) {
+            if (ex.getId() == intento) {
+                return ex.getNomExercici();
+            }
         }
         return null;
     }
-    
+
     public Review getReview(int id) {
         Review rev = null;
-        for (Review review : reviews){
-            if(review.getIdIntent() == id) return review;
+        for (Review review : reviews) {
+            if (review.getIdIntent() == id) {
+                return review;
+            }
         }
         return rev;
     }
-    
+
     public int registraReview(Review rev) {
         int ok = 0;
         ok = da.registraReview(rev);
-        return ok;              
+        return ok;
     }
-    
+
     // -------------------------------------------------------------- CHECK PARA SABER SI CREAR O MODIFICAR LA REVIEW
-     public boolean intentoTieneReview(int intentoId) {
+    public boolean intentoTieneReview(int intentoId) {
         boolean crear = false;
-        for(Review rev : reviews) {
-            if (rev.getIdIntent() == intentoId) crear = true;  // Si la review existe, no se creara
+        for (Review rev : reviews) {
+            if (rev.getIdIntent() == intentoId) {
+                crear = true;  // Si la review existe, no se creara
+            }
         }
         return crear;
     }
-     
-     public int updateReview(int valoracion, String comentario,  int intento) {
-         int total = 0;
-         total = da.updateReview(valoracion, comentario, intento);
-         return total;
-     }
+
+    public int updateReview(int valoracion, String comentario, int intento) {
+        int total = 0;
+        total = da.updateReview(valoracion, comentario, intento);
+        return total;
+    }
+
+    public int dropIntent(int idIntent) {
+        int confirmacion = 0;
+        confirmacion = da.deleteIntent(idIntent);
+        return confirmacion;
+    }
 }

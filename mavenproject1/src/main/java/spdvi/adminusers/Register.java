@@ -12,11 +12,12 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
+public class Register extends JDialog {
 
-public class Register extends JDialog{
     private JTextField userIdField;
     private JPasswordField passwordField;
     private JButton loginButton;
@@ -33,20 +34,32 @@ public class Register extends JDialog{
         JLabel passwordLabel = new JLabel("Password: ");
         passwordField = new JPasswordField();
 
-        
         // Botón de login
         loginButton = new JButton("Registro");
         loginButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String userId = userIdField.getText();
-                char[] passwordChar = passwordField.getPassword();
-                String password = BCrypt.withDefaults().hashToString(12, passwordChar);
-                System.out.print(userId);
-                System.out.print(password);
-                
-                ((MainForm)parent).registro(userId, password);
-                dispose();
+
+                int result = JOptionPane.showConfirmDialog(
+                        null,
+                        "¿Quieres crear nuevo usuario?",
+                        "Confirm",
+                        JOptionPane.YES_NO_OPTION,
+                        JOptionPane.QUESTION_MESSAGE);
+
+                if (result == JOptionPane.YES_OPTION) {
+
+                    String userId = userIdField.getText();
+                    char[] passwordChar = passwordField.getPassword();
+                    String password = BCrypt.withDefaults().hashToString(12, passwordChar);
+                    System.out.print(userId);
+                    System.out.print(password);
+
+                    ((MainForm) parent).registro(userId, password);
+                    dispose();
+                } else {
+                    dispose();
+                }
             }
         });
 

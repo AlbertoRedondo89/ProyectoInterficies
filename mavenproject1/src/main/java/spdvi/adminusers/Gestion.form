@@ -25,11 +25,13 @@
           <Group type="102" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="jScrollPane1" alignment="0" min="-2" pref="238" max="-2" attributes="0"/>
-                  <Group type="102" alignment="0" attributes="0">
-                      <Component id="jButtonMuestraTodos" min="-2" pref="87" max="-2" attributes="0"/>
+                  <Component id="jScrollPane1" min="-2" pref="238" max="-2" attributes="0"/>
+                  <Group type="102" attributes="0">
+                      <Component id="jButtonMuestraTodos" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="jButtonMuestraPendientes" min="-2" max="-2" attributes="0"/>
+                      <Component id="jButtonMuestraPendientes" min="-2" pref="81" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="jButtonEliminaIntento" min="-2" max="-2" attributes="0"/>
                   </Group>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
@@ -53,6 +55,7 @@
                               <Group type="103" groupAlignment="3" attributes="0">
                                   <Component id="jButtonMuestraPendientes" alignment="3" min="-2" max="-2" attributes="0"/>
                                   <Component id="jButtonMuestraTodos" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jButtonEliminaIntento" alignment="3" min="-2" max="-2" attributes="0"/>
                               </Group>
                           </Group>
                           <Component id="jScrollPane2" alignment="0" min="-2" pref="408" max="-2" attributes="0"/>
@@ -390,6 +393,14 @@
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonMuestraPendientesActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="jButtonEliminaIntento">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Eliminar"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonEliminaIntentoActionPerformed"/>
       </Events>
     </Component>
   </SubComponents>

@@ -4,10 +4,12 @@
  */
 package spdvi.adminusers;
 
+import at.favre.lib.crypto.bcrypt.BCrypt;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.JOptionPane;
 import javax.swing.RowSorter.SortKey;
 import javax.swing.SortOrder;
 import javax.swing.SwingUtilities;
@@ -33,10 +35,11 @@ public class Gestion extends javax.swing.JPanel {
     private Logica logica = new Logica();
     private EmbeddedMediaPlayerComponent mediaPlayer;
     private TableRowSorter<TablaIntentosGeneral> sorter;
+
     public Gestion() {
         initComponents();
     }
-    
+
     public Gestion(MainForm pare) {
         this.pare = pare;
         System.setProperty("jna.library.path", "C:\\Program Files\\VideoLAN\\VLC");
@@ -48,12 +51,11 @@ public class Gestion extends javax.swing.JPanel {
         iniciaTablaIntents();
     }
 
-    
-     public void iniciaTablaUsers() {
-         ArrayList<Usuari> users = logica.getUsuaris();
-         TablaUsuariosGeneral tablaUsers = new TablaUsuariosGeneral(users);
-         jTableUsers.removeAll();
-         jTableUsers.setModel(tablaUsers);
+    public void iniciaTablaUsers() {
+        ArrayList<Usuari> users = logica.getUsuaris();
+        TablaUsuariosGeneral tablaUsers = new TablaUsuariosGeneral(users);
+        jTableUsers.removeAll();
+        jTableUsers.setModel(tablaUsers);
     }
 
     public void iniciaTablaIntents() {
@@ -61,19 +63,19 @@ public class Gestion extends javax.swing.JPanel {
         TablaIntentosGeneral tablaIntentos = new TablaIntentosGeneral(intents);
         jTableIntents.removeAll();
         jTableIntents.setModel(tablaIntentos);
-        
+
         pintaTabla();
         sorterIntentos(tablaIntentos);
         jTextComentario.setForeground(Color.BLACK);
         jTextComentario.setBackground(Color.WHITE);
-        
+
         // Reproducción automática del primer vídeo
         if (!intents.isEmpty()) {
             jTableIntents.changeSelection(0, 0, false, false);
             playVid(intents.get(0)); // Llama a playVid solo después de que el panel sea visible
         }
     }
-    
+
     // ------------------------------------------------------------------------------------------------------------------------------------------- METODO PARA LOS COLORES DE LA TABLA
     private void pintaTabla() {
         ColoresTabla coloresTabla = new ColoresTabla();
@@ -81,7 +83,7 @@ public class Gestion extends javax.swing.JPanel {
             jTableIntents.getColumnModel().getColumn(i).setCellRenderer(coloresTabla);
         }
     }
-    
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -110,6 +112,7 @@ public class Gestion extends javax.swing.JPanel {
         jButtonPause = new javax.swing.JButton();
         jButtonMuestraTodos = new javax.swing.JButton();
         jButtonMuestraPendientes = new javax.swing.JButton();
+        jButtonEliminaIntento = new javax.swing.JButton();
 
         setPreferredSize(new java.awt.Dimension(1200, 800));
 
@@ -331,6 +334,13 @@ public class Gestion extends javax.swing.JPanel {
             }
         });
 
+        jButtonEliminaIntento.setText("Eliminar");
+        jButtonEliminaIntento.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonEliminaIntentoActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -341,9 +351,11 @@ public class Gestion extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 238, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jButtonMuestraTodos, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jButtonMuestraTodos)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButtonMuestraPendientes)))
+                        .addComponent(jButtonMuestraPendientes, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButtonEliminaIntento)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -362,7 +374,8 @@ public class Gestion extends javax.swing.JPanel {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(jButtonMuestraPendientes)
-                                    .addComponent(jButtonMuestraTodos)))
+                                    .addComponent(jButtonMuestraTodos)
+                                    .addComponent(jButtonEliminaIntento)))
                             .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 408, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -399,15 +412,15 @@ public class Gestion extends javax.swing.JPanel {
     }//GEN-LAST:event_jTableIntentsMouseClicked
 
     private void playVid(Intent intento) {
-            String archivo = "src\\main\\resources\\videos\\" + intento.getVideofile();
-            SwingUtilities.invokeLater(() -> {
-                mediaPlayer.mediaPlayer().media().play(archivo);
+        String archivo = "src\\main\\resources\\videos\\" + intento.getVideofile();
+        SwingUtilities.invokeLater(() -> {
+            mediaPlayer.mediaPlayer().media().play(archivo);
 
-                jLabelNombreEjercicio.setText(logica.getNombreEjercicio(intento.getIdExercici()));
-                jLabelFechaEjercicio.setText(intento.getInici().toString());
-            });
+            jLabelNombreEjercicio.setText(logica.getNombreEjercicio(intento.getIdExercici()));
+            jLabelFechaEjercicio.setText(intento.getInici().toString());
+        });
     }
-    
+
     // ------------------------------------------------------------------------------------------------------------------------------------------BOTON VISUALIZAR TODAS LAS REVIEWS
     private void jButtonMuestraTodosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonMuestraTodosActionPerformed
         // TODO add your handling code here:
@@ -421,7 +434,7 @@ public class Gestion extends javax.swing.JPanel {
         jTableIntents.changeSelection(0, 0, false, false);
         playVid(intents.get(0));
     }//GEN-LAST:event_jButtonMuestraTodosActionPerformed
-    
+
     // ------------------------------------------------------------------------------------------------------------------------------------------BOTON VISUALIZAR REVIEWS PENDIENTES
     private void jButtonMuestraPendientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonMuestraPendientesActionPerformed
         // TODO add your handling code here:
@@ -438,23 +451,24 @@ public class Gestion extends javax.swing.JPanel {
     }//GEN-LAST:event_jButtonMuestraPendientesActionPerformed
 
     private void sorterIntentos(TablaIntentosGeneral tabla) {
-         //IMPLEMENTACIÓ SORTER
+        //IMPLEMENTACIÓ SORTER
         sorter = new TableRowSorter<>(tabla);
         jTableIntents.setRowSorter(sorter);
-        
+
         // ORDENACIÓ X DEFECTE
         List<SortKey> sortKeys = new ArrayList<>();
-        sortKeys.add(new SortKey(2,SortOrder.DESCENDING)); // ordre desitjat;
+        sortKeys.add(new SortKey(2, SortOrder.DESCENDING)); // ordre desitjat;
         sorter.setSortKeys(sortKeys);
     }
-        // ------------------------------------------------------------------------------------------------------------------------------------------ACTIVADOR AL CLICAR EN LA TABLA USUARIOS
+
+    // ------------------------------------------------------------------------------------------------------------------------------------------ACTIVADOR AL CLICAR EN LA TABLA USUARIOS
     private void jTableUsersMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTableUsersMouseClicked
         // LOCALIZA EL USUARIO SELECCIONADO Y ALTERA LA TABLA DE INTENTOS PAR MOSTRAR SOLO LOS DE ESE USUARIO
         int numUser = jTableUsers.getSelectedRow();
         if (numUser != -1) {
             TablaUsuariosGeneral modelo = (TablaUsuariosGeneral) jTableUsers.getModel();
             Usuari usuari = modelo.getUser(numUser);
-            
+
             ArrayList<Intent> intents = logica.getIntentsDeUsuario(usuari.getId());
             TablaIntentosGeneral tablaIntentosUsuario = new TablaIntentosGeneral(intents);
             jTableIntents.removeAll();
@@ -468,27 +482,31 @@ public class Gestion extends javax.swing.JPanel {
 
     private void jButtonGuardarReviewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonGuardarReviewActionPerformed
         // TODO add your handling code here:
-            int intentoId = (int) jTableIntents.getValueAt(jTableIntents.getSelectedRow(), 0);
+        int intentoId = (int) jTableIntents.getValueAt(jTableIntents.getSelectedRow(), 0);
 
-            if (logica.intentoTieneReview(intentoId)) {
-                String comentario = jTextComentario.getText();
-                int valoracion = (int)jComboBoxValoracion.getSelectedIndex()+1;
-                logica.updateReview(valoracion, comentario,  intentoId);
-            } else {
-                Review review = new Review();
-                review.setIdIntent(intentoId);
-                review.setValoracio((int)jComboBoxValoracion.getSelectedIndex()+1);
-                review.setIdReviewer(pare.getUser());
-                review.setComentari(jTextComentario.getText());
+        if (logica.intentoTieneReview(intentoId)) {
+            String comentario = jTextComentario.getText();
+            int valoracion = (int) jComboBoxValoracion.getSelectedIndex() + 1;
+            logica.updateReview(valoracion, comentario, intentoId);
+        } else {
+            Review review = new Review();
+            review.setIdIntent(intentoId);
+            review.setValoracio((int) jComboBoxValoracion.getSelectedIndex() + 1);
+            review.setIdReviewer(pare.getUser());
+            review.setComentari(jTextComentario.getText());
 
-                int resultado = logica.registraReview(review);
-                if (resultado == 1) System.out.println("Ha ido bien");
-                if (resultado == 0) System.out.println("Review no registrada");
-                else System.out.println("Algo no ha ido bien...");
+            int resultado = logica.registraReview(review);
+            if (resultado == 1) {
+                System.out.println("Ha ido bien");
             }
+            if (resultado == 0) {
+                System.out.println("Review no registrada");
+            } else {
+                System.out.println("Algo no ha ido bien...");
+            }
+        }
     }//GEN-LAST:event_jButtonGuardarReviewActionPerformed
 
-    
     private void jButtonModificaReviewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonModificaReviewActionPerformed
         // TODO add your handling code here:
         jTextComentario.setEnabled(true);
@@ -497,7 +515,7 @@ public class Gestion extends javax.swing.JPanel {
 
     private void jComboBoxValoracionItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBoxValoracionItemStateChanged
         // TODO add your handling code here:
-     activaBoton();
+        activaBoton();
     }//GEN-LAST:event_jComboBoxValoracionItemStateChanged
 
     private void jButtonPlayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPlayActionPerformed
@@ -505,20 +523,44 @@ public class Gestion extends javax.swing.JPanel {
     }//GEN-LAST:event_jButtonPlayActionPerformed
 
     private void jButtonStropActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonStropActionPerformed
-       mediaPlayer.mediaPlayer().controls().stop();
+        mediaPlayer.mediaPlayer().controls().stop();
     }//GEN-LAST:event_jButtonStropActionPerformed
 
     private void jButtonPauseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPauseActionPerformed
         mediaPlayer.mediaPlayer().controls().pause();
     }//GEN-LAST:event_jButtonPauseActionPerformed
 
+    private void jButtonEliminaIntentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonEliminaIntentoActionPerformed
+        int result = JOptionPane.showConfirmDialog(
+                null,
+                "¿Seguro que deseas eliminar el intento? \nEsta acción no se puede dehacer",
+                "Confirm",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.QUESTION_MESSAGE);
+
+        if (result == JOptionPane.YES_OPTION) {
+            int resultado = logica.dropIntent((int) jTableIntents.getValueAt(jTableIntents.getSelectedRow(), 0));
+            switch (resultado) {
+                case 0 ->
+                    JOptionPane.showMessageDialog(null, "Error al eliminar el intento");
+                case 1 ->
+                    JOptionPane.showMessageDialog(null, "Intento eliminado con éxito");
+                default ->
+                    JOptionPane.showMessageDialog(null, "Algo ha ido mal");
+            }
+        }
+    }//GEN-LAST:event_jButtonEliminaIntentoActionPerformed
+
     private void activaBoton() {
-        if(!jTextComentario.getText().isEmpty() && jComboBoxValoracion.getSelectedIndex() != -1) jButtonGuardarReview.setEnabled(true);
-        else jButtonGuardarReview.setEnabled(false);
+        if (!jTextComentario.getText().isEmpty() && jComboBoxValoracion.getSelectedIndex() != -1) {
+            jButtonGuardarReview.setEnabled(true);
+        } else {
+            jButtonGuardarReview.setEnabled(false);
+        }
     }
-    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButtonEliminaIntento;
     private javax.swing.JButton jButtonEliminaReview;
     private javax.swing.JButton jButtonGuardarReview;
     private javax.swing.JButton jButtonModificaReview;
