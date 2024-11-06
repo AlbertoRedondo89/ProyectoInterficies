@@ -13,7 +13,7 @@ import spdvi.adminusers.dto.Usuari;
 
 public class Logica {
 
-    private DataAccess da = new DataAccess();
+    private final DataAccess da = new DataAccess();
     private ArrayList<Usuari> usuaris = new ArrayList<>();
     private ArrayList<Exercici> exercicis = new ArrayList<>();
     private ArrayList<Intent> intents = new ArrayList<>();

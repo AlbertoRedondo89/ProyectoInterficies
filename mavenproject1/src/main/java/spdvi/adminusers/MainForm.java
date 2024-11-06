@@ -5,6 +5,7 @@
 package spdvi.adminusers;
 
 import java.awt.CardLayout;
+import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Desktop;
 import java.awt.Image;
@@ -17,27 +18,29 @@ import spdvi.adminusers.dataaccess.DataAccess;
 import spdvi.adminusers.dto.Usuari;
 
 public class MainForm extends javax.swing.JFrame {
-    
+
     private DataAccess da = new DataAccess();
     private Gestion gestion;
     private int idUsuario;
-    
+
     public MainForm() {
         initComponents();
         //ICONO
         ImageIcon icon = new ImageIcon(getClass().getResource("/images/logo.png"));
         Image image = icon.getImage().getScaledInstance(jLabel1.getWidth(), jLabel1.getHeight(), Image.SCALE_SMOOTH);
         jLabel1.setIcon(new ImageIcon(image));
-           //CardLayout para cambiar entree paneles
-           getContentPane().setLayout(new CardLayout());
+        //CardLayout para cambiar entree paneles
+        getContentPane().setLayout(new CardLayout());
 
         //JPANEL GENERAL
         gestion = new Gestion(this);
         gestion.setVisible(false);
-        
+
         getContentPane().add(jPanelInicio, "inicio");
         getContentPane().add(gestion, "gestion");
-        
+
+        setBackground(Color.BLACK);
+
     }
 
     /**
@@ -62,9 +65,12 @@ public class MainForm extends javax.swing.JFrame {
         setPreferredSize(new java.awt.Dimension(1200, 800));
         setResizable(false);
 
+        jPanelInicio.setBackground(new java.awt.Color(0, 0, 0));
+
         jLabel1.setText("jLabel2");
         jLabel1.setAlignmentX(0.5F);
 
+        jButtonLogin.setBackground(new java.awt.Color(0, 0, 0));
         jButtonLogin.setText("Login");
         jButtonLogin.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -72,7 +78,11 @@ public class MainForm extends javax.swing.JFrame {
             }
         });
 
+        jButtonRegistro.setBackground(new java.awt.Color(0, 0, 0));
+        jButtonRegistro.setForeground(new java.awt.Color(255, 255, 102));
         jButtonRegistro.setText("Registro");
+        jButtonRegistro.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(51, 51, 51), new java.awt.Color(102, 102, 102), null, null));
+        jButtonRegistro.setBorderPainted(false);
         jButtonRegistro.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonRegistroActionPerformed(evt);
@@ -98,7 +108,7 @@ public class MainForm extends javax.swing.JFrame {
         jPanelInicioLayout.setHorizontalGroup(
             jPanelInicioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelInicioLayout.createSequentialGroup()
-                .addContainerGap(150, Short.MAX_VALUE)
+                .addContainerGap(278, Short.MAX_VALUE)
                 .addGroup(jPanelInicioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanelInicioLayout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
@@ -107,8 +117,8 @@ public class MainForm extends javax.swing.JFrame {
                         .addComponent(jButtonLogin)
                         .addGap(50, 50, 50))
                     .addGroup(jPanelInicioLayout.createSequentialGroup()
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 509, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(150, Short.MAX_VALUE))))
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(278, Short.MAX_VALUE))))
             .addGroup(jPanelInicioLayout.createSequentialGroup()
                 .addGap(20, 20, 20)
                 .addComponent(jLabelWeb)
@@ -117,9 +127,9 @@ public class MainForm extends javax.swing.JFrame {
         jPanelInicioLayout.setVerticalGroup(
             jPanelInicioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelInicioLayout.createSequentialGroup()
-                .addContainerGap(150, Short.MAX_VALUE)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 292, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 150, Short.MAX_VALUE)
+                .addContainerGap(96, Short.MAX_VALUE)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 97, Short.MAX_VALUE)
                 .addGroup(jPanelInicioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButtonLogin)
                     .addComponent(jButtonRegistro))
@@ -127,6 +137,10 @@ public class MainForm extends javax.swing.JFrame {
                 .addComponent(jLabelWeb)
                 .addGap(28, 28, 28))
         );
+
+        jMenuBar1.setBackground(new java.awt.Color(0, 0, 0));
+        jMenuBar1.setBorder(null);
+        jMenuBar1.setForeground(new java.awt.Color(255, 255, 102));
 
         jMenuFile.setText("File");
         jMenuBar1.add(jMenuFile);
@@ -151,7 +165,7 @@ public class MainForm extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButtonLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonLoginActionPerformed
-        
+
         Login login = new Login(this);
         login.setSize(300, 200);
         login.setVisible(true);
@@ -178,16 +192,16 @@ public class MainForm extends javax.swing.JFrame {
     private void jLabelWebMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelWebMouseExited
         setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
     }//GEN-LAST:event_jLabelWebMouseExited
-    
+
     public void abrirMenuPrincipal(String user, char[] password) {
-        if(da.accesoUsuario(user, password)){
-            CardLayout c1 = (CardLayout)getContentPane().getLayout();
+        if (da.accesoUsuario(user, password)) {
+            CardLayout c1 = (CardLayout) getContentPane().getLayout();
             c1.show(getContentPane(), "gestion");
-       }else {
+        } else {
             JOptionPane.showMessageDialog(null, "Usuario incorrecto, pichón");
-       }
+        }
     }
-    
+
     public void registro(String user, String password) {
         Usuari us = new Usuari();
         us.setNom(user);
@@ -195,12 +209,12 @@ public class MainForm extends javax.swing.JFrame {
         us.setEmail(user + "@gmail");
         us.setFoto(null);
         us.setIsInstructor(true);
-        
+
         int resultado = da.registerUser(us);
-        
+
         System.out.println(resultado);
     }
-    
+
     public int getUser() {
         return idUsuario;
     }
