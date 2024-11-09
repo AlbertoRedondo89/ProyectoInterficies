@@ -27,7 +27,7 @@ public class Logica {
         return usuaris;
     }
     
-    // ---------------------------------------------------------------------------------------- devuelve lista  Usuaris != PROFESOR
+    // ---------------------------------------------------------------------------------------- devuelve lista  USUARIS != PROFESOR
     public ArrayList<Usuari> getUsuarisNoProfesor() {
         ArrayList<Usuari> noProf = new ArrayList<>();
         for (Usuari u : usuaris) if (!u.isIsInstructor()) noProf.add(u);
@@ -51,6 +51,7 @@ public class Logica {
         return intents;
     }
 
+// -------------------------------------------------------------------------------------------------------------- Lista de intentos + su ESTADO
     public void setIntents(ArrayList<Intent> intents, ArrayList<Review> reviews) {
         for (Review rev : reviews) {
             for (Intent intento : intents) {
@@ -74,6 +75,7 @@ public class Logica {
         this.reviews = reviews;
     }
 
+    // Actualiza los datos que maneja esta clase, usado cuando se hace algún cambio en la BD. 
     public void actualizaDatos() {
         setUsuaris(da.getUsuaris());
         setExercicis(da.getExercicis());
@@ -81,6 +83,7 @@ public class Logica {
         setIntents(da.getIntents2(), reviews);
     }
     
+    // Actualiza lo datos al hacer cambios en los intentos en la BD
      public void actualizaIntentos() {
         setIntents(da.getIntents2(), reviews);
     }
@@ -92,13 +95,12 @@ public class Logica {
 
         for (Intent inten : intents) {
             for (Review revi : reviews) {
-                if (inten.getId() == revi.getIdIntent()) {
+                if (inten.getId() == revi.getIdIntent())  {
                     check = false;
+                    break;
                 }
             }
-            if (check) {
-                intentosSinReview.add(inten);
-            }
+            if (check) intentosSinReview.add(inten);
             check = true;
         }
         return intentosSinReview;
@@ -109,18 +111,14 @@ public class Logica {
         ArrayList<Intent> intentosUsuario = new ArrayList<>();
 
         for (Intent inten : intents) {
-            if (inten.getIdUsuari() == id) {
-                intentosUsuario.add(inten);
-            }
+            if (inten.getIdUsuari() == id)  intentosUsuario.add(inten);
         }
         return intentosUsuario;
     }
 
     public String getNombreEjercicio(int intento) {
         for (Exercici ex : exercicis) {
-            if (ex.getId() == intento) {
-                return ex.getNomExercici();
-            }
+            if (ex.getId() == intento) return ex.getNomExercici();
         }
         return null;
     }
@@ -128,9 +126,7 @@ public class Logica {
     public Review getReview(int id) {
         Review rev = null;
         for (Review review : reviews) {
-            if (review.getIdIntent() == id) {
-                return review;
-            }
+            if (review.getIdIntent() == id) return review;
         }
         return rev;
     }
@@ -158,7 +154,7 @@ public class Logica {
         return total;
     }
 
-    // REVISAR no tiene en cuenta FK, posible error
+    // REVISAR, no tiene en cuenta FK, posible error
     public int dropRegistro(String tabla, int idIntent) {
         int confirmacion = 0;
         confirmacion = da.deleteRegister(tabla , idIntent);

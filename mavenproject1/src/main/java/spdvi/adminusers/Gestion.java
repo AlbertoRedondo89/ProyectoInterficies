@@ -442,12 +442,13 @@ public class Gestion extends javax.swing.JPanel {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 467, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addGap(30, 30, 30)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jButtonLogout, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(26, 26, 26)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(184, 184, 184)
+                        .addComponent(jButtonLogout, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(30, 30, 30)
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(20, 20, 20))
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -467,7 +468,7 @@ public class Gestion extends javax.swing.JPanel {
             TablaIntentosGeneral modelo = (TablaIntentosGeneral) jTableIntents.getModel();
             Intent intento = modelo.getIntent(modelIndex);
 
-            playVid(intento); // Aquí el video correcto estará vinculado al intento correcto
+            playVid(intento); 
             Review rev = logica.getReview(intento.getId());
             if (rev != null) {
                 reviewActiva = rev;
@@ -490,10 +491,11 @@ public class Gestion extends javax.swing.JPanel {
         }
     }
     
+    // ------------------------------------------------------------------------------------------------------------------------------------------ PLAY VIDEO
     private void playVid(Intent intento) {
         String archivo = "src\\main\\resources\\videos\\" + intento.getVideofile();
         SwingUtilities.invokeLater(() -> {
-            mediaPlayer.mediaPlayer().media().play(archivo);
+            mediaPlayer.mediaPlayer().media().play(archivo); // espera a que los elementos estén cargados antes de empezar a reproducir el video. 
 
             jLabelNombreEjercicio.setText(logica.getNombreEjercicio(intento.getIdExercici()));
             jLabelFechaEjercicio.setText(intento.getInici().toString());
@@ -527,7 +529,7 @@ public class Gestion extends javax.swing.JPanel {
         playVid(intents.get(0));
     }//GEN-LAST:event_jButtonMuestraTodosActionPerformed
 
-    // ------------------------------------------------------------------------------------------------------------------------------------------BOTON VISUALIZAR REVIEWS PENDIENTES
+    // -------------------------------------------------------------------------------------------------------------------------------------------BOTON VISUALIZAR REVIEWS PENDIENTES
     private void jButtonMuestraPendientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonMuestraPendientesActionPerformed
         // TODO add your handling code here:
         ArrayList<Intent> intents = logica.getIntentsSinReview();
@@ -542,12 +544,12 @@ public class Gestion extends javax.swing.JPanel {
 
     }//GEN-LAST:event_jButtonMuestraPendientesActionPerformed
 
+    // ------------------------------------------------------------------------------------------------------------------------------------------ SORTER  de tabla
     private void sorterIntentos(TablaIntentosGeneral tabla) {
-        //IMPLEMENTACIÓ SORTER
         sorter = new TableRowSorter<>(tabla);
         jTableIntents.setRowSorter(sorter);
 
-        // ORDENACIÓ X DEFECTE
+        // ordenación  por defecto
         List<SortKey> sortKeys = new ArrayList<>();
         sortKeys.add(new SortKey(2, SortOrder.DESCENDING)); // ordre desitjat;
         sorter.setSortKeys(sortKeys);
@@ -574,7 +576,9 @@ public class Gestion extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_jTableUsersMouseClicked
 
-    // METODO DEBERIA ESTAR EN LOGICA
+    //Metodo para guardar REVIEW,
+    //  if REVIEW existe -> UPDATE rieview    //    else -> INSERT review
+    // METODO DEBERIA ESTAR EN LOGICA*****
     private void jButtonGuardarReviewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonGuardarReviewActionPerformed
         // TODO add your handling code here:
         int intentoId = (int) jTableIntents.getValueAt(jTableIntents.getSelectedRow(), 0);
@@ -619,6 +623,7 @@ public class Gestion extends javax.swing.JPanel {
         activaBoton();
     }//GEN-LAST:event_jComboBoxValoracionItemStateChanged
 
+    // ------------------------------------------------------------------------------------------------------------------------------------------ BOTONES VIDEO
     private void jButtonPlayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPlayActionPerformed
         mediaPlayer.mediaPlayer().controls().play();
     }//GEN-LAST:event_jButtonPlayActionPerformed
@@ -631,6 +636,7 @@ public class Gestion extends javax.swing.JPanel {
         mediaPlayer.mediaPlayer().controls().pause();
     }//GEN-LAST:event_jButtonPauseActionPerformed
 
+    
     private void jButtonEliminaIntentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonEliminaIntentoActionPerformed
        eliminaRegistro("Intents", ((int) jTableIntents.getValueAt(jTableIntents.getSelectedRow(), 0)));
        muestraDatosIntento();
@@ -650,6 +656,7 @@ public class Gestion extends javax.swing.JPanel {
         pare.cerrarSesion();
     }//GEN-LAST:event_jButtonLogoutActionPerformed
 
+// ---------------------------------------------------------------------------------------------------------------------------------------------  metodo general para llamar a ELIMINAR un registro de datos.     
     private void eliminaRegistro(String tabla, int id) {
          int result = JOptionPane.showConfirmDialog(
                 null,
