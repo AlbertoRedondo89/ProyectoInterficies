@@ -16,6 +16,7 @@ import spdvi.adminusers.dto.Usuari;
 import at.favre.lib.crypto.bcrypt.BCrypt;
 import java.io.IOException;
 import java.io.InputStream;
+import java.sql.CallableStatement;
 import java.sql.Statement;
 import java.util.Properties;
 
@@ -164,10 +165,10 @@ public class DataAccess {
         return intents;
     }
 
-    public int deleteIntent(int idIntent) {
+    public int deleteRegister(String tabla, int idIntent) {
         Connection connection = getConnection();
         int confirmacion = 0;
-        String sql = "DELETE from Intents where Id = " + idIntent;
+        String sql = "DELETE from " + tabla + "  where Id = " + idIntent;
         try (Statement st = connection.createStatement()) {
 
             confirmacion = st.executeUpdate(sql);
@@ -235,6 +236,10 @@ public class DataAccess {
 
         return autorizado;
     }
+    
+    public void cerrarActivo() {
+        activo = 0;
+    }
 
     // ----------------------------------------------------------------------------------------------------------------GESTION DE  REVIEW
     // ----------------------------------------------------------------------------------------------------------------INSERTAR NUEVA  REVIEW
@@ -276,11 +281,13 @@ public class DataAccess {
             pst.setInt(4, intento);
             total = pst.executeUpdate();
             System.out.println("Elementos afectados: " + total);
+            connection.close();
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
         };
         return total;
     }
+    
 
     //--------------------------------------------------------------------------------------------------------------------------------------------------------------------
     //---------------------------------------------------------------------------------- EXERCICI ----------------------------------------------------------------------------------

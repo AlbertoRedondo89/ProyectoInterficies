@@ -42,7 +42,6 @@ public class MainForm extends javax.swing.JFrame {
         setBackground(Color.BLACK);
 
     }
-
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -59,7 +58,10 @@ public class MainForm extends javax.swing.JFrame {
         jLabelWeb = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenuFile = new javax.swing.JMenu();
+        jMenuSalir = new javax.swing.JMenuItem();
         jMenuHelp = new javax.swing.JMenu();
+        jMenuAbout = new javax.swing.JMenu();
+        jMenuInfo = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setPreferredSize(new java.awt.Dimension(1200, 800));
@@ -70,26 +72,37 @@ public class MainForm extends javax.swing.JFrame {
         jLabel1.setText("jLabel2");
         jLabel1.setAlignmentX(0.5F);
 
-        jButtonLogin.setBackground(new java.awt.Color(0, 0, 0));
+        jButtonLogin.setBackground(new java.awt.Color(219, 202, 48));
+        jButtonLogin.setFont(new java.awt.Font("Blippo Light SF", 0, 18)); // NOI18N
+        jButtonLogin.setForeground(new java.awt.Color(255, 255, 0));
         jButtonLogin.setText("Login");
+        jButtonLogin.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 0)));
+        jButtonLogin.setContentAreaFilled(false);
+        jButtonLogin.setMargin(new java.awt.Insets(10, 10, 10, 10));
+        jButtonLogin.setMinimumSize(new java.awt.Dimension(150, 150));
+        jButtonLogin.setPreferredSize(new java.awt.Dimension(75, 45));
         jButtonLogin.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonLoginActionPerformed(evt);
             }
         });
 
-        jButtonRegistro.setBackground(new java.awt.Color(0, 0, 0));
-        jButtonRegistro.setForeground(new java.awt.Color(255, 255, 102));
+        jButtonRegistro.setBackground(new java.awt.Color(219, 202, 48));
+        jButtonRegistro.setFont(new java.awt.Font("Blippo Light SF", 0, 18)); // NOI18N
+        jButtonRegistro.setForeground(new java.awt.Color(255, 255, 0));
         jButtonRegistro.setText("Registro");
-        jButtonRegistro.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(51, 51, 51), new java.awt.Color(102, 102, 102), null, null));
-        jButtonRegistro.setBorderPainted(false);
+        jButtonRegistro.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 0)));
+        jButtonRegistro.setContentAreaFilled(false);
+        jButtonRegistro.setMargin(new java.awt.Insets(10, 10, 10, 10));
+        jButtonRegistro.setMinimumSize(new java.awt.Dimension(150, 150));
+        jButtonRegistro.setPreferredSize(new java.awt.Dimension(75, 45));
         jButtonRegistro.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonRegistroActionPerformed(evt);
             }
         });
 
-        jLabelWeb.setForeground(new java.awt.Color(0, 51, 255));
+        jLabelWeb.setForeground(new java.awt.Color(0, 255, 255));
         jLabelWeb.setText("Pulsa aquí para acceder a nuestra WEB");
         jLabelWeb.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -112,9 +125,9 @@ public class MainForm extends javax.swing.JFrame {
                 .addGroup(jPanelInicioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanelInicioLayout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jButtonRegistro)
+                        .addComponent(jButtonRegistro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButtonLogin)
+                        .addComponent(jButtonLogin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(50, 50, 50))
                     .addGroup(jPanelInicioLayout.createSequentialGroup()
                         .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -127,12 +140,12 @@ public class MainForm extends javax.swing.JFrame {
         jPanelInicioLayout.setVerticalGroup(
             jPanelInicioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelInicioLayout.createSequentialGroup()
-                .addContainerGap(96, Short.MAX_VALUE)
+                .addContainerGap(88, Short.MAX_VALUE)
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 97, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 88, Short.MAX_VALUE)
                 .addGroup(jPanelInicioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButtonLogin)
-                    .addComponent(jButtonRegistro))
+                    .addComponent(jButtonLogin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButtonRegistro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabelWeb)
                 .addGap(28, 28, 28))
@@ -143,10 +156,36 @@ public class MainForm extends javax.swing.JFrame {
         jMenuBar1.setForeground(new java.awt.Color(255, 255, 102));
 
         jMenuFile.setText("File");
+
+        jMenuSalir.setText("Salir");
+        jMenuSalir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuSalirActionPerformed(evt);
+            }
+        });
+        jMenuFile.add(jMenuSalir);
+
         jMenuBar1.add(jMenuFile);
 
         jMenuHelp.setText("Help");
         jMenuBar1.add(jMenuHelp);
+
+        jMenuAbout.setText("About");
+        jMenuAbout.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuAboutActionPerformed(evt);
+            }
+        });
+
+        jMenuInfo.setText("Info");
+        jMenuInfo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuInfoActionPerformed(evt);
+            }
+        });
+        jMenuAbout.add(jMenuInfo);
+
+        jMenuBar1.add(jMenuAbout);
 
         setJMenuBar(jMenuBar1);
 
@@ -165,7 +204,6 @@ public class MainForm extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButtonLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonLoginActionPerformed
-
         Login login = new Login(this);
         login.setSize(300, 200);
         login.setVisible(true);
@@ -193,6 +231,20 @@ public class MainForm extends javax.swing.JFrame {
         setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
     }//GEN-LAST:event_jLabelWebMouseExited
 
+    private void jMenuSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuSalirActionPerformed
+        System.exit(0);
+    }//GEN-LAST:event_jMenuSalirActionPerformed
+
+    private void jMenuAboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuAboutActionPerformed
+       
+    }//GEN-LAST:event_jMenuAboutActionPerformed
+
+    private void jMenuInfoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuInfoActionPerformed
+        AboutInfo info = new AboutInfo(this);
+        info.setSize(300, 400);
+        info.setVisible(true);
+    }//GEN-LAST:event_jMenuInfoActionPerformed
+
     public void abrirMenuPrincipal(String user, char[] password) {
         if (da.accesoUsuario(user, password)) {
             CardLayout c1 = (CardLayout) getContentPane().getLayout();
@@ -200,6 +252,11 @@ public class MainForm extends javax.swing.JFrame {
         } else {
             JOptionPane.showMessageDialog(null, "Usuario incorrecto, pichón");
         }
+    }
+    
+    public void cerrarSesion() {
+        CardLayout c2 = (CardLayout) getContentPane().getLayout();
+        c2.show(getContentPane(),"inicio");
     }
 
     public void registro(String user, String password) {
@@ -259,9 +316,12 @@ public class MainForm extends javax.swing.JFrame {
     private javax.swing.JButton jButtonRegistro;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabelWeb;
+    private javax.swing.JMenu jMenuAbout;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenu jMenuFile;
     private javax.swing.JMenu jMenuHelp;
+    private javax.swing.JMenuItem jMenuInfo;
+    private javax.swing.JMenuItem jMenuSalir;
     private javax.swing.JPanel jPanelInicio;
     // End of variables declaration//GEN-END:variables
 }

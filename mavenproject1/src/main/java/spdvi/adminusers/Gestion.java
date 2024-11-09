@@ -4,11 +4,15 @@
  */
 package spdvi.adminusers;
 
-import at.favre.lib.crypto.bcrypt.BCrypt;
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Image;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.RowSorter.SortKey;
 import javax.swing.SortOrder;
@@ -35,6 +39,7 @@ public class Gestion extends javax.swing.JPanel {
     private Logica logica = new Logica();
     private EmbeddedMediaPlayerComponent mediaPlayer;
     private TableRowSorter<TablaIntentosGeneral> sorter;
+    private Review reviewActiva = null;
 
     public Gestion() {
         initComponents();
@@ -49,10 +54,15 @@ public class Gestion extends javax.swing.JPanel {
         jPanelVideo.add(mediaPlayer, BorderLayout.CENTER);
         iniciaTablaUsers();
         iniciaTablaIntents();
+        
+        setButtonIcon(jButtonPlay, "/images/play.png");
+        setButtonIcon(jButtonPause, "/images/pause.png");
+        setButtonIcon(jButtonStrop, "/images/stop.png");
+        
     }
 
     public void iniciaTablaUsers() {
-        ArrayList<Usuari> users = logica.getUsuaris();
+        ArrayList<Usuari> users = logica.getUsuarisNoProfesor();
         TablaUsuariosGeneral tablaUsers = new TablaUsuariosGeneral(users);
         jTableUsers.removeAll();
         jTableUsers.setModel(tablaUsers);
@@ -113,11 +123,15 @@ public class Gestion extends javax.swing.JPanel {
         jButtonMuestraTodos = new javax.swing.JButton();
         jButtonMuestraPendientes = new javax.swing.JButton();
         jButtonEliminaIntento = new javax.swing.JButton();
+        jButtonLogout = new javax.swing.JButton();
 
+        setBackground(new java.awt.Color(0, 0, 0));
         setPreferredSize(new java.awt.Dimension(1200, 800));
 
-        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Review Info"));
+        jPanel1.setBackground(new java.awt.Color(0, 0, 0));
+        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Review Info", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("sansserif", 1, 12), new java.awt.Color(217, 198, 96))); // NOI18N
 
+        jLabelComentario.setForeground(new java.awt.Color(217, 198, 96));
         jLabelComentario.setText("Comentario");
 
         jTextComentario.setColumns(20);
@@ -126,6 +140,11 @@ public class Gestion extends javax.swing.JPanel {
         jTextComentario.setWrapStyleWord(true);
         jTextComentario.setDisabledTextColor(new java.awt.Color(51, 51, 51));
         jTextComentario.setEnabled(false);
+        jTextComentario.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                jTextComentarioPropertyChange(evt);
+            }
+        });
         jScrollPane3.setViewportView(jTextComentario);
 
         jComboBoxValoracion.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "1", "2", "3", "4", "5" }));
@@ -136,6 +155,7 @@ public class Gestion extends javax.swing.JPanel {
             }
         });
 
+        jLabel3.setForeground(new java.awt.Color(217, 198, 96));
         jLabel3.setText("Valoración");
 
         jButtonGuardarReview.setText("Guardar review");
@@ -156,6 +176,11 @@ public class Gestion extends javax.swing.JPanel {
 
         jButtonEliminaReview.setText("Eliminar Review");
         jButtonEliminaReview.setEnabled(false);
+        jButtonEliminaReview.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonEliminaReviewActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -163,23 +188,23 @@ public class Gestion extends javax.swing.JPanel {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel3)
-                        .addGap(26, 26, 26)
-                        .addComponent(jLabelComentario))
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(jButtonEliminaReview)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButtonModificaReview)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButtonGuardarReview))
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(jPanel1Layout.createSequentialGroup()
-                            .addComponent(jButtonEliminaReview)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(jButtonModificaReview)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(jButtonGuardarReview))
+                            .addComponent(jLabel3)
+                            .addGap(26, 26, 26)
+                            .addComponent(jLabelComentario))
                         .addGroup(jPanel1Layout.createSequentialGroup()
                             .addComponent(jComboBoxValoracion, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 712, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 905, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(49, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -237,6 +262,9 @@ public class Gestion extends javax.swing.JPanel {
         });
         jScrollPane1.setViewportView(jTableIntents);
 
+        jPanel2.setBackground(new java.awt.Color(217, 198, 96));
+        jPanel2.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 255, 255), 1, true));
+
         jPanelVideo.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         jPanelVideo.setLayout(new java.awt.BorderLayout());
 
@@ -248,21 +276,36 @@ public class Gestion extends javax.swing.JPanel {
 
         jLabelFechaEjercicio.setText("............................");
 
-        jButtonPlay.setText("Play");
+        jButtonPlay.setBackground(new java.awt.Color(217, 198, 96));
+        jButtonPlay.setBorder(null);
+        jButtonPlay.setBorderPainted(false);
+        jButtonPlay.setContentAreaFilled(false);
+        jButtonPlay.setMinimumSize(new java.awt.Dimension(28, 28));
+        jButtonPlay.setPreferredSize(new java.awt.Dimension(28, 28));
         jButtonPlay.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonPlayActionPerformed(evt);
             }
         });
 
-        jButtonStrop.setText("Stop");
+        jButtonStrop.setBackground(new java.awt.Color(217, 198, 96));
+        jButtonStrop.setBorder(null);
+        jButtonStrop.setBorderPainted(false);
+        jButtonStrop.setContentAreaFilled(false);
+        jButtonStrop.setMinimumSize(new java.awt.Dimension(28, 28));
+        jButtonStrop.setPreferredSize(new java.awt.Dimension(28, 28));
         jButtonStrop.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonStropActionPerformed(evt);
             }
         });
 
-        jButtonPause.setText("Pause");
+        jButtonPause.setBackground(new java.awt.Color(217, 198, 96));
+        jButtonPause.setBorder(null);
+        jButtonPause.setBorderPainted(false);
+        jButtonPause.setContentAreaFilled(false);
+        jButtonPause.setMinimumSize(new java.awt.Dimension(28, 28));
+        jButtonPause.setPreferredSize(new java.awt.Dimension(28, 28));
         jButtonPause.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonPauseActionPerformed(evt);
@@ -274,62 +317,83 @@ public class Gestion extends javax.swing.JPanel {
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(25, 25, 25)
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabelNombreEjercicio, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(185, 185, 185)
-                        .addComponent(jLabel2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabelFechaEjercicio, javax.swing.GroupLayout.PREFERRED_SIZE, 306, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(230, 230, 230)
-                        .addComponent(jButtonPlay)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButtonPause)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButtonStrop)))
-                .addContainerGap(45, Short.MAX_VALUE))
-            .addComponent(jPanelVideo, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(25, 25, 25)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabelNombreEjercicio, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(185, 185, 185)
+                .addComponent(jLabel2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabelFechaEjercicio, javax.swing.GroupLayout.PREFERRED_SIZE, 306, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addComponent(jPanelVideo, javax.swing.GroupLayout.PREFERRED_SIZE, 780, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(322, 322, 322)
+                .addComponent(jButtonPlay, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jButtonPause, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jButtonStrop, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(jLabelFechaEjercicio, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1)
                     .addComponent(jLabelNombreEjercicio, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanelVideo, javax.swing.GroupLayout.PREFERRED_SIZE, 441, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButtonPlay)
-                    .addComponent(jButtonStrop)
-                    .addComponent(jButtonPause)))
+                .addComponent(jPanelVideo, javax.swing.GroupLayout.PREFERRED_SIZE, 429, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jButtonPlay, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButtonPause, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButtonStrop, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(5, 5, 5))
         );
 
+        jButtonMuestraTodos.setBackground(new java.awt.Color(217, 198, 96));
         jButtonMuestraTodos.setText("Todos");
+        jButtonMuestraTodos.setBorderPainted(false);
+        jButtonMuestraTodos.setFocusPainted(false);
+        jButtonMuestraTodos.setMinimumSize(new java.awt.Dimension(39, 20));
         jButtonMuestraTodos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonMuestraTodosActionPerformed(evt);
             }
         });
 
+        jButtonMuestraPendientes.setBackground(new java.awt.Color(217, 198, 96));
         jButtonMuestraPendientes.setText("Pendientes");
+        jButtonMuestraPendientes.setBorderPainted(false);
+        jButtonMuestraPendientes.setFocusPainted(false);
+        jButtonMuestraPendientes.setMinimumSize(new java.awt.Dimension(67, 20));
         jButtonMuestraPendientes.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonMuestraPendientesActionPerformed(evt);
             }
         });
 
+        jButtonEliminaIntento.setBackground(new java.awt.Color(217, 198, 96));
         jButtonEliminaIntento.setText("Eliminar");
+        jButtonEliminaIntento.setBorderPainted(false);
+        jButtonEliminaIntento.setFocusPainted(false);
+        jButtonEliminaIntento.setMinimumSize(new java.awt.Dimension(50, 20));
         jButtonEliminaIntento.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonEliminaIntentoActionPerformed(evt);
+            }
+        });
+
+        jButtonLogout.setBackground(new java.awt.Color(217, 198, 96));
+        jButtonLogout.setText("LOGOUT");
+        jButtonLogout.setBorderPainted(false);
+        jButtonLogout.setFocusPainted(false);
+        jButtonLogout.setMinimumSize(new java.awt.Dimension(54, 20));
+        jButtonLogout.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonLogoutActionPerformed(evt);
             }
         });
 
@@ -340,48 +404,60 @@ public class Gestion extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 299, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(10, 10, 10)
-                        .addComponent(jButtonMuestraTodos)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 299, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(12, 12, 12)
+                                .addComponent(jButtonMuestraTodos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jButtonMuestraPendientes, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jButtonEliminaIntento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButtonMuestraPendientes, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButtonEliminaIntento)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(layout.createSequentialGroup()
                         .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap())))
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 6, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButtonLogout, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(26, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(50, 50, 50)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 340, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGap(53, 53, 53)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 419, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jButtonMuestraPendientes)
-                            .addComponent(jButtonMuestraTodos)
-                            .addComponent(jButtonEliminaIntento)))
-                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(41, 41, 41)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 316, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(64, 64, 64))
+                            .addComponent(jButtonMuestraPendientes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jButtonMuestraTodos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jButtonEliminaIntento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                        .addGap(10, 10, 10)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 467, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGap(30, 30, 30)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jButtonLogout, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(26, 26, 26)))
+                .addGap(20, 20, 20))
         );
     }// </editor-fold>//GEN-END:initComponents
 
     // ------------------------------------------------------------------------------------------------------------------------------------------ACTIVADOR DE VIDEO AL CLICAR EN LA TABLA
     private void jTableIntentsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTableIntentsMouseClicked
+           muestraDatosIntento();
+    }//GEN-LAST:event_jTableIntentsMouseClicked
 
+    private void muestraDatosIntento() {
         int row = jTableIntents.getSelectedRow();
         if (row != -1) {
             // Esto para que, al ordenar, no se desajuste el elemento seleccionado
@@ -394,13 +470,14 @@ public class Gestion extends javax.swing.JPanel {
             playVid(intento); // Aquí el video correcto estará vinculado al intento correcto
             Review rev = logica.getReview(intento.getId());
             if (rev != null) {
+                reviewActiva = rev;
                 jTextComentario.setText(rev.getComentari());
                 jTextComentario.setEnabled(false);
                 jComboBoxValoracion.setSelectedIndex(rev.getValoracio() - 1); //menos 1 para evitar outOfBounds
                 jComboBoxValoracion.setEnabled(false);
                 jButtonEliminaReview.setEnabled(true);
                 jButtonModificaReview.setEnabled(true);
-                jButtonGuardarReview.setEnabled(true);
+                jButtonGuardarReview.setEnabled(false);
             } else {
                 jTextComentario.setText("");
                 jTextComentario.setEnabled(true);
@@ -408,11 +485,11 @@ public class Gestion extends javax.swing.JPanel {
                 jComboBoxValoracion.setEnabled(true);
                 jButtonEliminaReview.setEnabled(false);
                 jButtonModificaReview.setEnabled(false);
-                jButtonGuardarReview.setEnabled(true);
+                jButtonGuardarReview.setEnabled(false);
             }
         }
-    }//GEN-LAST:event_jTableIntentsMouseClicked
-
+    }
+    
     private void playVid(Intent intento) {
         String archivo = "src\\main\\resources\\videos\\" + intento.getVideofile();
         SwingUtilities.invokeLater(() -> {
@@ -423,6 +500,19 @@ public class Gestion extends javax.swing.JPanel {
         });
     }
 
+    // Comprueba que los botones están creados y les añade el icono
+    private void setButtonIcon(JButton button, String imagePath) {
+        button.addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentResized(ComponentEvent e) {
+                ImageIcon icon = new ImageIcon(getClass().getResource(imagePath));
+                Image image = icon.getImage().getScaledInstance(button.getWidth(), button.getHeight(), Image.SCALE_SMOOTH);
+                button.setIcon(new ImageIcon(image));
+                button.setText(""); // Eliminar cualquier texto
+                button.setToolTipText(imagePath); // Opcional: Establecer un tooltip con el nombre de la acción
+            }
+        });
+    }
     // ------------------------------------------------------------------------------------------------------------------------------------------BOTON VISUALIZAR TODAS LAS REVIEWS
     private void jButtonMuestraTodosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonMuestraTodosActionPerformed
         // TODO add your handling code here:
@@ -470,18 +560,21 @@ public class Gestion extends javax.swing.JPanel {
         if (numUser != -1) {
             TablaUsuariosGeneral modelo = (TablaUsuariosGeneral) jTableUsers.getModel();
             Usuari usuari = modelo.getUser(numUser);
-
-            ArrayList<Intent> intents = logica.getIntentsDeUsuario(usuari.getId());
-            TablaIntentosGeneral tablaIntentosUsuario = new TablaIntentosGeneral(intents);
-            jTableIntents.removeAll();
-            jTableIntents.setModel(tablaIntentosUsuario);
-            pintaTabla();
-            sorterIntentos(tablaIntentosUsuario);
-            jTableIntents.changeSelection(0, 0, false, false);
-            playVid(intents.get(0));
+            if (logica.usuarioTieneintentos(usuari.getId())) {
+                ArrayList<Intent> intents = logica.getIntentsDeUsuario(usuari.getId());
+                TablaIntentosGeneral tablaIntentosUsuario = new TablaIntentosGeneral(intents);
+                jTableIntents.removeAll();
+                jTableIntents.setModel(tablaIntentosUsuario);
+                pintaTabla();
+                sorterIntentos(tablaIntentosUsuario);
+                jTableIntents.changeSelection(0, 0, false, false);
+                playVid(intents.get(0));
+            }
+            else  JOptionPane.showMessageDialog(null, "El usuario todavía no tiene intentos");
         }
     }//GEN-LAST:event_jTableUsersMouseClicked
 
+    // METODO DEBERIA ESTAR EN LOGICA
     private void jButtonGuardarReviewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonGuardarReviewActionPerformed
         // TODO add your handling code here:
         int intentoId = (int) jTableIntents.getValueAt(jTableIntents.getSelectedRow(), 0);
@@ -511,6 +604,7 @@ public class Gestion extends javax.swing.JPanel {
                 }
             }
             logica.actualizaDatos();
+            iniciaTablaIntents();
         }
     }//GEN-LAST:event_jButtonGuardarReviewActionPerformed
 
@@ -538,26 +632,47 @@ public class Gestion extends javax.swing.JPanel {
     }//GEN-LAST:event_jButtonPauseActionPerformed
 
     private void jButtonEliminaIntentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonEliminaIntentoActionPerformed
-        int result = JOptionPane.showConfirmDialog(
+       eliminaRegistro("Intents", ((int) jTableIntents.getValueAt(jTableIntents.getSelectedRow(), 0)));
+       muestraDatosIntento();
+    }//GEN-LAST:event_jButtonEliminaIntentoActionPerformed
+
+    private void jButtonEliminaReviewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonEliminaReviewActionPerformed
+        eliminaRegistro("Review", reviewActiva.getId());
+        muestraDatosIntento();
+    }//GEN-LAST:event_jButtonEliminaReviewActionPerformed
+
+    private void jTextComentarioPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_jTextComentarioPropertyChange
+        activaBoton(); 
+    }//GEN-LAST:event_jTextComentarioPropertyChange
+
+    private void jButtonLogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonLogoutActionPerformed
+        logica.cerrarSesion();
+        pare.cerrarSesion();
+    }//GEN-LAST:event_jButtonLogoutActionPerformed
+
+    private void eliminaRegistro(String tabla, int id) {
+         int result = JOptionPane.showConfirmDialog(
                 null,
-                "¿Seguro que deseas eliminar el intento? \nEsta acción no se puede dehacer",
+                "¿Seguro que deseas eliminar el registro? \nEsta acción no se puede deshacer",
                 "Confirm",
                 JOptionPane.YES_NO_OPTION,
                 JOptionPane.QUESTION_MESSAGE);
 
         if (result == JOptionPane.YES_OPTION) {
-            int resultado = logica.dropIntent((int) jTableIntents.getValueAt(jTableIntents.getSelectedRow(), 0));
+            int resultado = logica.dropRegistro(tabla, id);
             switch (resultado) {
                 case 0 ->
-                    JOptionPane.showMessageDialog(null, "Error al eliminar el intento");
+                    JOptionPane.showMessageDialog(null, "Error al eliminar el registro");
                 case 1 ->
-                    JOptionPane.showMessageDialog(null, "Intento eliminado con éxito");
+                    JOptionPane.showMessageDialog(null, "Registro eliminado con éxito");
                 default ->
                     JOptionPane.showMessageDialog(null, "Algo ha ido mal");
             }
         }
-    }//GEN-LAST:event_jButtonEliminaIntentoActionPerformed
-
+            logica.actualizaDatos();
+            iniciaTablaIntents();
+    }
+    
     private void activaBoton() {
         if (!jTextComentario.getText().isEmpty() && jComboBoxValoracion.getSelectedIndex() != -1) {
             jButtonGuardarReview.setEnabled(true);
@@ -570,6 +685,7 @@ public class Gestion extends javax.swing.JPanel {
     private javax.swing.JButton jButtonEliminaIntento;
     private javax.swing.JButton jButtonEliminaReview;
     private javax.swing.JButton jButtonGuardarReview;
+    private javax.swing.JButton jButtonLogout;
     private javax.swing.JButton jButtonModificaReview;
     private javax.swing.JButton jButtonMuestraPendientes;
     private javax.swing.JButton jButtonMuestraTodos;

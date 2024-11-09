@@ -26,6 +26,14 @@ public class Logica {
     public ArrayList<Usuari> getUsuaris() {
         return usuaris;
     }
+    
+    // ---------------------------------------------------------------------------------------- devuelve lista  Usuaris != PROFESOR
+    public ArrayList<Usuari> getUsuarisNoProfesor() {
+        ArrayList<Usuari> noProf = new ArrayList<>();
+        for (Usuari u : usuaris) if (!u.isIsInstructor()) noProf.add(u);
+        return noProf;
+    }
+    
 
     public void setUsuaris(ArrayList<Usuari> usuaris) {
         this.usuaris = usuaris;
@@ -70,6 +78,10 @@ public class Logica {
         setUsuaris(da.getUsuaris());
         setExercicis(da.getExercicis());
         setReviews(da.getReviews());
+        setIntents(da.getIntents2(), reviews);
+    }
+    
+     public void actualizaIntentos() {
         setIntents(da.getIntents2(), reviews);
     }
 
@@ -146,9 +158,23 @@ public class Logica {
         return total;
     }
 
-    public int dropIntent(int idIntent) {
+    // REVISAR no tiene en cuenta FK, posible error
+    public int dropRegistro(String tabla, int idIntent) {
         int confirmacion = 0;
-        confirmacion = da.deleteIntent(idIntent);
+        confirmacion = da.deleteRegister(tabla , idIntent);
         return confirmacion;
     }
+    
+    public void cerrarSesion() {
+        da.cerrarActivo();
+    }
+    
+    // ------------- METODO PARA COMPROBAR SI UN USUARIO TIENE INTENTOS
+    // aL HACER CLIC EN UN USUARIO, EVITARÁ UN ERROR AL NO ENCONTRAR INTENTOS. 
+   public boolean usuarioTieneintentos(int User) {
+       boolean tiene = false;
+            for (Intent i : intents) if (i.getIdUsuari() == User) return true;
+       return tiene;
+   }
+    
 }
